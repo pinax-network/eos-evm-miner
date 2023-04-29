@@ -1,4 +1,4 @@
-# EOS EVM Relay Miner
+# EOS EVM Miner
 
 This tool allows you to accept Ethereum transactions and relay them to the EOS EVM.
 
