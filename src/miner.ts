@@ -61,8 +61,6 @@ export default class EosEvmMiner {
             throw new Error("There was an error pushing this transaction from this EOS EVM miner.");
         });
 
-        // By the ethereum standard, we should always return the tx hash.
-        // The receiver should call eth_getTransactionReceipt to get the status.
         return '0x'+keccak256(Buffer.from(rlptx, "hex"));
     }
 
