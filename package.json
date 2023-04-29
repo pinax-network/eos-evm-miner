@@ -1,0 +1,32 @@
+{
+  "name": "@enf/eos-evm-miner",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node ./dist/index.js",
+    "mine": "npm run build && npm start",
+    "dev": "ts-node-dev ./src/index.ts",
+    "test": "mocha --require ts-node/register --recursive ./test/**/*.ts"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^18.16.2",
+    "chai": "^4.3.7",
+    "mocha": "^10.2.0",
+    "ts-node": "^10.9.1",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.0.4"
+  },
+  "dependencies": {
+    "colors": "^1.4.0",
+    "dotenv": "^16.0.3",
+    "eosjs": "^22.1.0",
+    "ethereumjs-util": "^7.1.5",
+    "isomorphic-fetch": "^3.0.0",
+    "jayson": "^4.0.0",
+    "winston": "^3.8.2"
+  }
+}
