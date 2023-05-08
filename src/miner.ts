@@ -70,7 +70,10 @@ export default class EosEvmMiner {
         }).catch(e => {
             logger.error(`Error pushing #${this.pushCount} to ${this.config.rpcEndpoints[this.currentRpcEndpoint]}`);
             logger.error(e);
-            this.swapRpcEndpoint();
+
+            // Too many possible reasons for this to fail,
+            // not necessarily an issue with the node.
+            // this.swapRpcEndpoint();
 
             throw new Error("There was an error pushing this transaction from this EOS EVM miner.");
         });
