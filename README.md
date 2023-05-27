@@ -15,7 +15,7 @@ For every transaction that you relay you will receive a reward in the form of EO
 ## Quickstart
 
 ```
-$ npm install -g eos-evm-miner
+$ npm install -g @enf/eos-evm-miner
 $ eos-evm-miner
 
 ███████╗ ██████╗ ███████╗    ███████╗██╗   ██╗███╗   ███╗
