@@ -1,6 +1,5 @@
 import { assert } from 'chai';
 import { describe, it } from 'mocha';
-import "isomorphic-fetch"
 
 /***
  * ⚠ WARNING ⚠
