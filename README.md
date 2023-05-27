@@ -16,7 +16,16 @@ For every transaction that you relay you will receive a reward in the form of EO
 
 ```
 $ npm install -g eos-evm-miner
-$ eos-evm-miner run
+$ eos-evm-miner
+
+███████╗ ██████╗ ███████╗    ███████╗██╗   ██╗███╗   ███╗
+██╔════╝██╔═══██╗██╔════╝    ██╔════╝██║   ██║████╗ ████║
+█████╗  ██║   ██║███████╗    █████╗  ██║   ██║██╔████╔██║
+██╔══╝  ██║   ██║╚════██║    ██╔══╝  ╚██╗ ██╔╝██║╚██╔╝██║
+███████╗╚██████╔╝███████║    ███████╗ ╚████╔╝ ██║ ╚═╝ ██║
+╚══════╝ ╚═════╝ ╚══════╝    ╚══════╝  ╚═══╝  ╚═╝     ╚═╝
+    EOS EVM Miner listening @ http://127.0.0.1:50305
+        Your miner account is miner.evm
 ```
 
 ## Environment Variables
