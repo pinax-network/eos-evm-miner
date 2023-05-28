@@ -1,5 +1,5 @@
 import { AnyAction } from "@wharfkit/session";
-import { MINER_ACCOUNT, permissionLevel } from "./config";
+import { MINER_ACCOUNT, permissionLevel } from "./config.js";
 
 export function pushtx(rlptx:string): AnyAction {
     return {

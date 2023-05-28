@@ -1,5 +1,5 @@
-import { assert } from 'chai';
-import { describe, it } from 'mocha';
+import { describe, it } from "node:test";
+import assert from "node:assert";
 
 /***
  * ⚠ WARNING ⚠
@@ -25,7 +25,7 @@ describe('RPC tests', () => {
             "id": 1
         };
 
-        const gasPrice:any = await sendRpc({...dataToSend, method: 'eth_gasPrice'})
+        const gasPrice = await sendRpc({...dataToSend, method: 'eth_gasPrice'})
             .catch(e => console.error(e));
 
         // Validating the response format
@@ -37,7 +37,7 @@ describe('RPC tests', () => {
         assert(gasPrice.result !== '0x1', 'Expected gas price have been gotten from an API');
 
 
-        const pushTx:any = await sendRpc({...dataToSend, method: 'eth_sendRawTransaction'})
+        const pushTx = await sendRpc({...dataToSend, method: 'eth_sendRawTransaction'})
             .catch(e => console.error(e));
 
         assert(pushTx.error && pushTx.error.code === -32000, 'Expected error code -32000');

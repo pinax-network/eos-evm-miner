@@ -1,8 +1,8 @@
 import { keccak256 } from 'ethereumjs-util';
-import { logger } from "./logger";
-import { pushtx } from "./actions";
-import { session } from "./config";
-import { config } from "./tables";
+import { logger } from "./logger.js";
+import { pushtx } from "./actions.js";
+import { session } from "./config.js";
+import { config } from "./tables.js";
 
 export async function eth_sendRawTransaction(params: any[]) {
     const rlptx = params[0].substr(2);

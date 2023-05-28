@@ -2,6 +2,7 @@
   "name": "@enf/eos-evm-miner",
   "version": "0.1.0",
   "description": "EOS EVM miner",
+  "type": "module",
   "bin": {
     "eos-evm-miner": "./dist/index.js"
   },
@@ -9,7 +10,7 @@
   "scripts": {
     "build": "tsc",
     "start": "tsx index.ts",
-    "test": "mocha --require ts-node/register --recursive ./test/**/*.ts"
+    "test": "tsx **/*.spec.ts"
   },
   "contributors": [
     "Yarkin",
@@ -28,11 +29,9 @@
     "winston": "latest"
   },
   "devDependencies": {
+    "@tsconfig/recommended": "latest",
     "@types/node": "latest",
-    "chai": "latest",
-    "mocha": "latest",
     "tsx": "latest",
-    "ts-node": "latest",
     "typescript": "latest"
   }
 }

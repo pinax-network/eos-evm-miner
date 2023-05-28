@@ -1,4 +1,4 @@
-import { session } from "./config";
+import { session } from "./config.js";
 
 export interface Config {
     version: number
