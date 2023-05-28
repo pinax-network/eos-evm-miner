@@ -2,6 +2,7 @@
 *-arm64
 *-x64
 *-x64.exe
+*.lock
 
 # Node.js
 node_modules/

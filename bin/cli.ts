@@ -2,7 +2,7 @@
 
 import { Command } from "commander";
 import pkg from "../package.json";
-import { DEFAULT_MINER_PERMISSION, DEFAULT_PORT } from "../src/config.js";
+import { DEFAULT_LOCK_GAS_PRICE_FILE, DEFAULT_MINER_PERMISSION, DEFAULT_PORT } from "../src/config.js";
 import { claim, start } from "../index.js";
 
 const program = new Command();
@@ -13,8 +13,9 @@ program.name(pkg.name)
 // Start JSON RPC Server
 defaultOptions(program.command("start"))
     .description("Start JSON RPC Server")
-    .option('-p --port <int>', 'JSON RPC listens on port number.', String(DEFAULT_PORT))
+    .option('-p --port <int>', 'JSON RPC listens on port number (listen for incoming Ethereum transactions).', String(DEFAULT_PORT))
     .option('--verbose', 'Enable verbose logging', false)
+    .option('--lock-gas-price', 'Lock gas price', DEFAULT_LOCK_GAS_PRICE_FILE)
     .action(start);
 
 // Claim EOS EVM Miner

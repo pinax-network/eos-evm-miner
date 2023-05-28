@@ -1,3 +1,4 @@
+import fs from "node:fs";
 import { keccak256 } from 'ethereumjs-util';
 import { logger } from "./logger.js";
 import { pushtx } from "./actions.js";
@@ -18,10 +19,20 @@ export async function eth_sendRawTransaction(session: Session, params: any[]) {
     return '0x' + keccak256(Buffer.from(rlptx, "hex"));
 }
 
-export async function eth_gasPrice(session: Session) {
+export async function eth_gasPrice(session: Session, lockGasPrice: string) {
+    // read from gas price lock file if it exists
+    if ( fs.existsSync(lockGasPrice) ) {
+        return fs.readFileSync(lockGasPrice, 'utf8');
+    }
     try {
         const result = await config(session);
-        return "0x" + parseInt(result.gas_price).toString(16);
+        const gas_price = "0x" + parseInt(result.gas_price).toString(16);
+
+        // save gas price if lockGasPrice is set
+        if ( lockGasPrice ) {
+            fs.writeFileSync(lockGasPrice, gas_price);
+        }
+        return gas_price;
     } catch(e) {
         logger.error("Error getting gas price from nodeos: " + e);
         throw new Error("There was an error getting the gas price from this EOS EVM miner.");

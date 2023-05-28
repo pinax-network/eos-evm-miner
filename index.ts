@@ -1,6 +1,6 @@
 import colors from "colors";
 import jayson from 'jayson';
-import { DEFAULT_PORT, createSession, explorer } from "./src/config.js";
+import { DEFAULT_PORT, DEFAULT_LOCK_GAS_PRICE_FILE, createSession, explorer } from "./src/config.js";
 import { eth_gasPrice, eth_sendRawTransaction } from "./src/miner.js";
 import { withdraw } from "./src/actions.js";
 import { balances } from "./src/tables.js";
@@ -34,10 +34,12 @@ export async function claim(options: MinerOptions) {
 export interface StartOptions extends MinerOptions {
     port?: number;
     verbose?: boolean;
+    lockGasPrice?: string;
 }
 
 export function start(options: StartOptions) {
     const port = options.port || DEFAULT_PORT;
+    const lockGasPrice = options.lockGasPrice ?? DEFAULT_LOCK_GAS_PRICE_FILE;
 
     // enable logging if verbose enabled
     if (options.verbose) logger.silent = false;
@@ -57,7 +59,7 @@ export function start(options: StartOptions) {
         },
         eth_gasPrice: async (params: any, callback: any) => {
             try {
-                const result = await eth_gasPrice(session)
+                const result = await eth_gasPrice(session, lockGasPrice)
                 callback(null, result);
             } catch (error: any) {
                 callback({ "code": -32000, "message": error.message });

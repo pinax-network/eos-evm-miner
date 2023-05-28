@@ -9,6 +9,7 @@ export const DEFAULT_MINER_PERMISSION = 'active';
 export const DEFAULT_PORT = 50305;
 export const DEFAULT_CHAIN_ID = 'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906';
 export const DEFAULT_RPC_ENDPOINT = 'https://eos.greymass.com';
+export const DEFAULT_LOCK_GAS_PRICE_FILE = 'gas_price.lock';
 
 // optional
 export const PORT = parseInt(process.env.PORT ?? String(DEFAULT_PORT));

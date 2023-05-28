@@ -45,8 +45,10 @@ Options:
   --private-key <string>  Miner private key (ex: "PVT_K1_...")
   --account <string>      Miner account name (ex: "miner.evm")
   --permission <string>   Miner permission (default: "active")
-  -p --port <int>         JSON RPC listens on port number. (default: "50305")
+  -p --port <int>         JSON RPC listens on port number (listen for incoming Ethereum
+                          transactions). (default: "50305")
   --verbose               Enable verbose logging (default: false)
+  --lock-gas-price        Lock gas price
   -h, --help              display help for command
 ```
 
@@ -68,19 +70,18 @@ MINER_ACCOUNT=miner.evm
 # miner (optional)
 MINER_PERMISSION=active
 
-# RPC (optional)
+# Nodeos (optional)
 RPC_ENDPOINT=https://eos.greymass.com
 CHAIN_ID=aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906
-# listen for incoming Ethereum transactions
+
+# JSON RPC (optional)
 PORT=50305
-# lock fetching new gas price
-LOCK_GAS_PRICE=true
-EXPIRE_SEC=60
+LOCK_GAS_PRICE=gas_price.lock
 ```
 
 ## Features
 
 - [x] Relay Ethereum transactions to the EOS EVM
 - [x] Get gas price from the EOS Network
-  - [ ] cache results
+  - [x] default, uses gas lock file (gas price does not change)
 - [x] Claim rewards
