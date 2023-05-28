@@ -1,12 +1,12 @@
 import { keccak256 } from 'ethereumjs-util';
 import { logger } from "./logger.js";
 import { pushtx } from "./actions.js";
-import { session } from "./config.js";
 import { config } from "./tables.js";
+import { Session } from '@wharfkit/session';
 
-export async function eth_sendRawTransaction(params: any[]) {
+export async function eth_sendRawTransaction(session: Session, params: any[]) {
     const rlptx = params[0].substr(2);
-    const action = pushtx(rlptx);
+    const action = pushtx(session, rlptx);
     try {
         const transact = await session.transact({action});
         const trx_id = transact.response?.transaction_id;
@@ -18,9 +18,9 @@ export async function eth_sendRawTransaction(params: any[]) {
     return '0x' + keccak256(Buffer.from(rlptx, "hex"));
 }
 
-export async function eth_gasPrice() {
+export async function eth_gasPrice(session: Session) {
     try {
-        const result = await config();
+        const result = await config(session);
         return "0x" + parseInt(result.gas_price).toString(16);
     } catch(e) {
         logger.error("Error getting gas price from nodeos: " + e);

@@ -1,25 +1,24 @@
-import { AnyAction } from "@wharfkit/session";
-import { MINER_ACCOUNT, permissionLevel } from "./config.js";
+import { AnyAction, Session } from "@wharfkit/session";
 
-export function pushtx(rlptx:string): AnyAction {
+export function pushtx(session: Session, rlptx:string): AnyAction {
     return {
         account: 'eosio.evm',
         name: "pushtx",
-        authorization: [permissionLevel],
+        authorization: [session.permissionLevel],
         data: {
-            miner: MINER_ACCOUNT,
+            miner: session.actor,
             rlptx
         }
     }
 }
 
-export function withdraw(quantity: string): AnyAction {
+export function withdraw(session: Session, quantity: string): AnyAction {
     return {
         account: 'eosio.evm',
         name: "withdraw",
-        authorization: [permissionLevel],
+        authorization: [session.permissionLevel],
         data: {
-            owner: MINER_ACCOUNT,
+            owner: session.actor,
             quantity
         }
     }

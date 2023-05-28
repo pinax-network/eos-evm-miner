@@ -1,5 +1,4 @@
-import { Name } from "@wharfkit/session";
-import { session } from "./config.js";
+import { Name, Session } from "@wharfkit/session";
 
 export interface Config {
     version: number
@@ -11,7 +10,7 @@ export interface Config {
     status: number
 }
 
-export async function config() {
+export async function config(session: Session) {
     const results = await session.client.v1.chain.get_table_rows({
         json: true,
         code: 'eosio.evm',
@@ -30,14 +29,14 @@ export interface Balances {
     }
 }
 
-export async function balances(owner: string) {
+export async function balances(session: Session) {
     const results = await session.client.v1.chain.get_table_rows({
         json: true,
         code: 'eosio.evm',
         scope: 'eosio.evm',
         table: 'balances',
-        lower_bound: Name.from(owner),
-        upper_bound: Name.from(owner),
+        lower_bound: Name.from(session.actor),
+        upper_bound: Name.from(session.actor),
         limit: 1,
     });
     return results.rows[0] as Balances;
