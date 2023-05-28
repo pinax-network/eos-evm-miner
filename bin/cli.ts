@@ -9,6 +9,7 @@ const program = new Command();
 program.name(pkg.name)
     .description("EOS EVM Miner JSON RPC Server")
     .option('-p --port <int>', 'JSON RPC listens on port number.', String(DEFAULT_PORT))
+    .option('--verbose', 'Enable verbose logging', false)
     .version(pkg.version, '-v, --version', `version for ${pkg.name}`)
     .action(run);
 

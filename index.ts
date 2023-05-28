@@ -4,9 +4,11 @@ import { MINER_ACCOUNT, PORT, session } from "./src/config.js";
 import { eth_gasPrice, eth_sendRawTransaction } from "./src/miner.js";
 import { withdraw } from "./src/actions.js";
 import { balances } from "./src/tables.js";
+import { logger } from "./src/logger.js";
 
-interface ActionOptions {
-    port: number,
+export interface ActionOptions {
+    port: number;
+    verbose: boolean;
 }
 
 export async function claim() {
@@ -23,6 +25,9 @@ export async function claim() {
 }
 
 export async function run(options: ActionOptions) {
+    // enable logging if verbose enabled
+    if (options.verbose) logger.silent = false;
+
     const server = new jayson.Server({
         eth_sendRawTransaction: async (params: any, callback: any) => {
             try {
@@ -43,7 +48,7 @@ export async function run(options: ActionOptions) {
     });
 
     server.http().listen(options.port);
-
+    logger.info("FOOO")
     process.stdout.write(`
 
     ███████╗ ██████╗ ███████╗    ███████╗██╗   ██╗███╗   ███╗
