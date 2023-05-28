@@ -13,9 +13,9 @@ For every transaction that you relay you will receive a reward in the form of EO
 
 ## [Binaries Releases](https://github.com/pinax-network/eos-evm-miner/releases)
 
-- Windows
-- MacOS
 - Linux
+- MacOS
+- Windows
 
 ## Quickstart
 
@@ -30,6 +30,24 @@ $ eos-evm-miner start
 ╚══════╝ ╚═════╝ ╚══════╝    ╚══════╝  ╚═══╝  ╚═╝     ╚═╝
     EOS EVM Miner listening @ http://127.0.0.1:50305
         Your miner account is miner.evm
+```
+
+## Help
+
+```
+$ eos-evm-miner start --help
+
+Usage: @enf/eos-evm-miner start [options]
+
+Start JSON RPC Server
+
+Options:
+  --private-key <string>  Miner private key (ex: "PVT_K1_...")
+  --account <string>      Miner account name (ex: "miner.evm")
+  --permission <string>   Miner permission (default: "active")
+  -p --port <int>         JSON RPC listens on port number. (default: "50305")
+  --verbose               Enable verbose logging (default: false)
+  -h, --help              display help for command
 ```
 
 ## Docker environment
