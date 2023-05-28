@@ -32,12 +32,19 @@ $ eos-evm-miner
         Your miner account is miner.evm
 ```
 
+## Docker environment
+
+```bash
+docker build -t eos-evm-miner .
+docker run -it --rm -p 50305:50305 --env-file .env eos-evm-miner
+```
+
 ## Environment Variables
 
 **`.env`**
 ```env
 # miner (required)
-PRIVATE_KEY="PVT_K1_..."
+PRIVATE_KEY=PVT_K1_...
 MINER_ACCOUNT=miner.evm
 
 # miner (optional)
@@ -46,8 +53,11 @@ MINER_PERMISSION=active
 # RPC (optional)
 RPC_ENDPOINT=https://eos.greymass.com
 CHAIN_ID=aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906
-PORT=50305 # listen for incoming Ethereum transactions
-LOCK_GAS_PRICE=true # lock fetching new gas price
+# listen for incoming Ethereum transactions
+PORT=50305
+# lock fetching new gas price
+LOCK_GAS_PRICE=true
+EXPIRE_SEC=60
 ```
 
 ## Features
