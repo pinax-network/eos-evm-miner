@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { Command } from "commander";
-import pkg from "../package.json" assert { type: "json" };
+import pkg from "../package.json";
 import { DEFAULT_PORT } from "../src/config.js";
 import { claim, run } from "../index.js";
 

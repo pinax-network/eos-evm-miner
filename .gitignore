@@ -1,3 +1,8 @@
+# pkg
+*-arm64
+*-x64
+*-x64.exe
+
 # Node.js
 node_modules/
 npm-debug.log

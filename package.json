@@ -3,7 +3,6 @@
   "name": "@enf/eos-evm-miner",
   "version": "0.1.0",
   "description": "EOS EVM miner",
-  "type": "module",
   "bin": {
     "eos-evm-miner": "./dist/bin/cli.js"
   },
@@ -11,6 +10,7 @@
   "scripts": {
     "build": "tsc",
     "start": "tsx bin/cli.ts",
+    "pkg": "tsc && pkg dist/bin/cli.js --target linux-x64,mac-x64,win-x64,mac-arm64 --output eos-evm-miner",
     "test": "tsx **/*.spec.ts"
   },
   "contributors": [
@@ -24,7 +24,7 @@
     "@wharfkit/session": "^0.5.0",
     "@wharfkit/wallet-plugin-privatekey": "^0.5.0",
     "colors": "latest",
-    "commander": "^10.0.1",
+    "commander": "latest",
     "dotenv": "latest",
     "ethereumjs-util": "latest",
     "jayson": "4.x",
@@ -34,6 +34,7 @@
     "@tsconfig/recommended": "latest",
     "@types/node": "latest",
     "tsx": "latest",
-    "typescript": "latest"
+    "typescript": "latest",
+    "pkg": "latest"
   }
 }
