@@ -19,7 +19,7 @@ defaultOptions(program.command("start"))
 
 // Claim EOS EVM Miner
 defaultOptions(program.command("claim"))
-    .description("Claim EOS EVM Miner")
+    .description("Claim EOS EVM miner rewards")
     .action(claim);
 
 program.command('completion').description('Generate the autocompletion script for the specified shell');
@@ -28,7 +28,7 @@ program.showHelpAfterError();
 program.parse();
 
 function defaultOptions(command: Command) {
-    return command.option('--private-key <string>', 'Miner private key (ex: PVT_K1_...)')
+    return command.option('--private-key <string>', 'Miner private key (ex: "PVT_K1_...")')
         .option('--account <string>', 'Miner account name (ex: "miner.evm")')
         .option('--permission <string>', 'Miner permission', DEFAULT_MINER_PERMISSION)
 }

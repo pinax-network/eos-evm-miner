@@ -20,7 +20,7 @@ For every transaction that you relay you will receive a reward in the form of EO
 ## Quickstart
 
 ```
-$ eos-evm-miner
+$ eos-evm-miner start
 
 ███████╗ ██████╗ ███████╗    ███████╗██╗   ██╗███╗   ███╗
 ██╔════╝██╔═══██╗██╔════╝    ██╔════╝██║   ██║████╗ ████║
@@ -36,7 +36,7 @@ $ eos-evm-miner
 
 ```bash
 docker build -t eos-evm-miner .
-docker run -it --rm -p 50305:50305 --env-file .env eos-evm-miner
+docker run -it --rm -p 50305:50305 --env-file .env eos-evm-miner start
 ```
 
 ## Environment Variables

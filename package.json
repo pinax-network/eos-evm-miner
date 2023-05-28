@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@enf/eos-evm-miner",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "EOS EVM miner",
   "bin": {
     "eos-evm-miner": "./dist/bin/cli.js"
@@ -9,7 +9,7 @@
   "exports": "./dist/index.js",
   "scripts": {
     "build": "tsc",
-    "start": "tsx bin/cli.ts",
+    "start": "tsx bin/cli.ts start",
     "pkg": "tsc && pkg dist/bin/cli.js --target linux-x64,mac-x64,win-x64,mac-arm64 --output eos-evm-miner",
     "test": "tsx **/*.spec.ts"
   },

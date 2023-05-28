@@ -1,5 +1,13 @@
-import { describe, it } from "node:test";
+import { describe, it, after } from "node:test";
 import assert from "node:assert";
+import { start } from "../index.js"
+import { PrivateKey } from "@wharfkit/session";
+
+// start the miner
+start({
+    actor: "evm.miner",
+    privateKey: PrivateKey.generate("K1").toString(),
+})
 
 /***
  * ⚠ WARNING ⚠
@@ -24,8 +32,6 @@ describe('RPC tests', () => {
             ],
             "id": 1
         };
-        // TO-DO allow test to run in CI
-        return;
 
         const gasPrice = await sendRpc({...dataToSend, method: 'eth_gasPrice'})
             .catch(e => console.error(e));
@@ -38,10 +44,16 @@ describe('RPC tests', () => {
 
         assert(gasPrice.result !== '0x1', 'Expected gas price have been gotten from an API');
 
-
         const pushTx = await sendRpc({...dataToSend, method: 'eth_sendRawTransaction'})
             .catch(e => console.error(e));
 
         assert(pushTx.error && pushTx.error.code === -32000, 'Expected error code -32000');
     });
+
+    after(() => {
+        setTimeout(() => {
+            process.exit();
+        }, 1000);
+    })
+
 });

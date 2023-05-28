@@ -1,4 +1,3 @@
-import { ExplorerDefinition } from "@wharfkit/session";
 import { ChainDefinitionType, Session } from "@wharfkit/session";
 import { WalletPluginPrivateKey } from "@wharfkit/wallet-plugin-privatekey";
 import dotenv from "dotenv";

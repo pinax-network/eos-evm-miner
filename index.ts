@@ -1,15 +1,15 @@
 import colors from "colors";
 import jayson from 'jayson';
-import { createSession, explorer } from "./src/config.js";
+import { DEFAULT_PORT, createSession, explorer } from "./src/config.js";
 import { eth_gasPrice, eth_sendRawTransaction } from "./src/miner.js";
 import { withdraw } from "./src/actions.js";
 import { balances } from "./src/tables.js";
 import { logger } from "./src/logger.js";
 
 export interface MinerOptions {
-    privateKey: string;
-    account: string;
-    permission: string;
+    privateKey?: string;
+    actor?: string;
+    permission?: string;
 }
 
 export async function claim(options: MinerOptions) {
@@ -32,11 +32,13 @@ export async function claim(options: MinerOptions) {
 }
 
 export interface StartOptions extends MinerOptions {
-    port: number;
-    verbose: boolean;
+    port?: number;
+    verbose?: boolean;
 }
 
-export async function start(options: StartOptions) {
+export function start(options: StartOptions) {
+    const port = options.port || DEFAULT_PORT;
+
     // enable logging if verbose enabled
     if (options.verbose) logger.silent = false;
 
@@ -63,7 +65,7 @@ export async function start(options: StartOptions) {
         }
     });
 
-    server.http().listen(options.port);
+    server.http().listen(port);
     process.stdout.write(`
 
     ███████╗ ██████╗ ███████╗    ███████╗██╗   ██╗███╗   ███╗
@@ -72,7 +74,7 @@ export async function start(options: StartOptions) {
     ██╔══╝  ██║   ██║╚════██║    ██╔══╝  ╚██╗ ██╔╝██║╚██╔╝██║
     ███████╗╚██████╔╝███████║    ███████╗ ╚████╔╝ ██║ ╚═╝ ██║
     ╚══════╝ ╚═════╝ ╚══════╝    ╚══════╝  ╚═══╝  ╚═╝     ╚═╝
-        EOS EVM Miner listening @ http://127.0.0.1:${colors.blue(options.port.toString())}
+        EOS EVM Miner listening @ http://127.0.0.1:${colors.blue(port.toString())}
             Your miner account is ${colors.blue(session.actor.toString())}
     `);
 }
