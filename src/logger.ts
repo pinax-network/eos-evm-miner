@@ -1,6 +1,6 @@
-import winston, {Logger, format} from 'winston';
+import winston, { format } from 'winston';
 
-export const logger:Logger = winston.createLogger({
+export const logger = winston.createLogger({
     level: 'info',
     format: format.combine(
         format.json(),

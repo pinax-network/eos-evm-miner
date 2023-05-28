@@ -5,9 +5,9 @@
   "description": "EOS EVM miner",
   "type": "module",
   "bin": {
-    "eos-evm-miner": "./dist/index.js"
+    "eos-evm-miner": "./dist/bin/cli.js"
   },
-  "main": "index.js",
+  "exports": "./dist/index.js",
   "scripts": {
     "build": "tsc",
     "start": "tsx bin/cli.ts",

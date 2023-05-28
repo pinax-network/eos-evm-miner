@@ -6,8 +6,9 @@
 		"module": "ESNext",
 		"moduleResolution": "nodenext",
 		"declaration": true,
+		"resolveJsonModule": true
 	},
 	"include": [
-		"index.ts"
+		"bin/cli.ts"
 	]
 }
