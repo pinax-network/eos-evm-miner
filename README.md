@@ -12,10 +12,15 @@ For every transaction that you relay you will receive a reward in the form of EO
 > docs](https://docs.eosnetwork.com/docs/latest/eos-evm/mining/basic-setup) to learn all about
 > mining, claiming your rewards, and more.
 
+## [Binaries Releases](https://github.com/pinax-network/eos-evm-miner/releases)
+
+- Windows
+- MacOS
+- Linux
+
 ## Quickstart
 
 ```
-$ npm install -g @enf/eos-evm-miner
 $ eos-evm-miner
 
 ███████╗ ██████╗ ███████╗    ███████╗██╗   ██╗███╗   ███╗
@@ -51,4 +56,4 @@ LOCK_GAS_PRICE=true # lock fetching new gas price
 - [x] Relay Ethereum transactions to the EOS EVM
 - [x] Get gas price from the EOS Network
   - [ ] cache results
-- [ ] Claim rewards
+- [x] Claim rewards
