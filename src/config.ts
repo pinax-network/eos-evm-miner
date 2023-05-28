@@ -3,6 +3,14 @@ import { WalletPluginPrivateKey } from "@wharfkit/wallet-plugin-privatekey";
 import dotenv from "dotenv";
 dotenv.config();
 
+// defaults
+export const DEFAULT_LOCK_GAS_PRICE = true;
+export const DEFAULT_MINER_PERMISSION = 'active';
+export const DEFAULT_PORT = 50305;
+export const DEFAULT_CHAIN_ID = 'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906';
+export const DEFAULT_RPC_ENDPOINT = 'https://eos.greymass.com';
+// export const DEFAULT_ADDRESS = '127.0.0.1';
+
 // required
 if (!process.env.PRIVATE_KEY) throw new Error('PRIVATE_KEY is required');
 if (!process.env.MINER_ACCOUNT) throw new Error('MINER_ACCOUNT is required');
@@ -10,12 +18,11 @@ export const PRIVATE_KEY = process.env.PRIVATE_KEY;
 export const MINER_ACCOUNT = process.env.MINER_ACCOUNT;
 
 // optional
-export const PORT = parseInt(process.env.PORT ?? '50305');
-export const LOCK_GAS_PRICE = JSON.parse(process.env.LOCK_GAS_PRICE ?? "true");
-export const MINER_PERMISSION = process.env.MINER_PERMISSION ?? "active";
-export const EXPIRE_SEC = parseInt(process.env.EXPIRE_SEC ?? '60');
-export const CHAIN_ID = process.env.CHAIN_ID ?? 'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906';
-export const RPC_ENDPOINT = process.env.RPC_ENDPOINT ?? 'https://eos.greymass.com';
+export const PORT = parseInt(process.env.PORT ?? String(DEFAULT_PORT));
+export const LOCK_GAS_PRICE = JSON.parse(process.env.LOCK_GAS_PRICE ?? String(DEFAULT_LOCK_GAS_PRICE));
+export const MINER_PERMISSION = process.env.MINER_PERMISSION ?? DEFAULT_MINER_PERMISSION;
+export const CHAIN_ID = process.env.CHAIN_ID ?? DEFAULT_CHAIN_ID;
+export const RPC_ENDPOINT = process.env.RPC_ENDPOINT ?? DEFAULT_RPC_ENDPOINT;
 
 export const permissionLevel = {
     actor: MINER_ACCOUNT,
