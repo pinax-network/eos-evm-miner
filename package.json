@@ -1,32 +1,38 @@
 {
   "name": "@enf/eos-evm-miner",
   "version": "0.1.0",
-  "description": "",
+  "description": "EOS EVM miner",
+  "bin": {
+    "eos-evm-miner": "./dist/index.js"
+  },
   "main": "index.js",
   "scripts": {
     "build": "tsc",
-    "start": "node ./dist/index.js",
-    "mine": "npm run build && npm start",
-    "dev": "ts-node-dev ./src/index.ts",
+    "start": "tsx index.ts",
     "test": "mocha --require ts-node/register --recursive ./test/**/*.ts"
   },
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "@types/node": "^18.16.2",
-    "chai": "^4.3.7",
-    "mocha": "^10.2.0",
-    "ts-node": "^10.9.1",
-    "ts-node-dev": "^2.0.0",
-    "typescript": "^5.0.4"
-  },
+  "contributors": [
+    "Yarkin",
+    "Matias Romeo",
+    "Nathan James",
+    "Denis Carriere"
+  ],
+  "license": "MIT",
   "dependencies": {
-    "colors": "^1.4.0",
-    "dotenv": "^16.0.3",
-    "eosjs": "^22.1.0",
-    "ethereumjs-util": "^7.1.5",
-    "isomorphic-fetch": "^3.0.0",
-    "jayson": "^4.0.0",
-    "winston": "^3.8.2"
+    "@wharfkit/session": "^0.5.0",
+    "@wharfkit/wallet-plugin-privatekey": "^0.5.0",
+    "colors": "latest",
+    "dotenv": "latest",
+    "ethereumjs-util": "latest",
+    "jayson": "4.x",
+    "winston": "latest"
+  },
+  "devDependencies": {
+    "@types/node": "latest",
+    "chai": "latest",
+    "mocha": "latest",
+    "tsx": "latest",
+    "ts-node": "latest",
+    "typescript": "latest"
   }
 }

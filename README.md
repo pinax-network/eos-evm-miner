@@ -4,16 +4,6 @@ This tool allows you to accept Ethereum transactions and relay them to the EOS E
 
 For every transaction that you relay you will receive a reward in the form of EOS tokens.
 
-## Environment Variables
-
-| Name | Description                                                                                                       | Default |
-| --- |-------------------------------------------------------------------------------------------------------------------|---------|
-| `PRIVATE_KEY` | The private key of the miner account                                                                              |         |
-| `MINER_ACCOUNT` | The name of the miner account on the EOS Network                                                                  |         |
-| `RPC_ENDPOINTS` | A list of EOS RPC endpoints to connect to, comma-delimited                                                        |         |
-| `PORT` | The port to listen on for incoming Ethereum transactions                                                          | `50305` |
-| `LOCK_GAS_PRICE` | If set to `true`, one a gas price is set, this miner will not hit the EOS API node again to fetch a new gas price | `true`  |
-
 ## Usage
 
 > ⚠ **You must have registered your miner**
@@ -22,43 +12,43 @@ For every transaction that you relay you will receive a reward in the form of EO
 > docs](https://docs.eosnetwork.com/docs/latest/eos-evm/mining/basic-setup) to learn all about
 > mining, claiming your rewards, and more.
 
+## Quickstart
 
-### Get the code
+```
+$ npm install -g @enf/eos-evm-miner
+$ eos-evm-miner
 
-```bash
-git clone https://github.com/eosnetworkfoundation/eos-evm-miner.git
-cd eos-evm-miner
+███████╗ ██████╗ ███████╗    ███████╗██╗   ██╗███╗   ███╗
+██╔════╝██╔═══██╗██╔════╝    ██╔════╝██║   ██║████╗ ████║
+█████╗  ██║   ██║███████╗    █████╗  ██║   ██║██╔████╔██║
+██╔══╝  ██║   ██║╚════██║    ██╔══╝  ╚██╗ ██╔╝██║╚██╔╝██║
+███████╗╚██████╔╝███████║    ███████╗ ╚████╔╝ ██║ ╚═╝ ██║
+╚══════╝ ╚═════╝ ╚══════╝    ╚══════╝  ╚═══╝  ╚═╝     ╚═╝
+    EOS EVM Miner listening @ http://127.0.0.1:50305
+        Your miner account is miner.evm
 ```
 
-### Install dependencies
+## Environment Variables
 
-```bash
-yarn
-// or 
-npm install
+**`.env`**
+```env
+# miner (required)
+PRIVATE_KEY="PVT_K1_..."
+MINER_ACCOUNT=miner.evm
+
+# miner (optional)
+MINER_PERMISSION=active
+
+# RPC (optional)
+RPC_ENDPOINT=https://eos.greymass.com
+CHAIN_ID=aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906
+PORT=50305 # listen for incoming Ethereum transactions
+LOCK_GAS_PRICE=true # lock fetching new gas price
 ```
 
-### Environment Variables
-Copy the `.env.example` file to `.env` and fill in the environment variables.
+## Features
 
-### Start mining
-
-This command will build and run the node.
-
-```bash
-yarn mine
-```
-
-If you want to just run the node without building, you can run:
-
-```bash
-yarn start
-```
-
-
-## Logging
-
-This project uses [Winston](https://github.com/winstonjs/winston) for logging.
-
-When you run the miner a directory called `logs` will be created in the root of the project. 
-Inside you will find two log files, `combined.log` and `error.log`.
+- [x] Relay Ethereum transactions to the EOS EVM
+- [x] Get gas price from the EOS Network
+  - [ ] cache results
+- [ ] Claim rewards
