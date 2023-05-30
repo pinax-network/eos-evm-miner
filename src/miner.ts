@@ -16,7 +16,7 @@ export async function eth_sendRawTransaction(session: Session, params: any[]) {
         logger.error("Error sending transaction to nodeos: " + e);
         throw new Error("There was an error sending this transaction to the EOS EVM miner.");
     }
-    return '0x' + keccak256(Buffer.from(rlptx, "hex"));
+    return '0x'+keccak256(Buffer.from(rlptx, "hex")).toString("hex");
 }
 
 export async function eth_gasPrice(session: Session, lockGasPrice: string) {
