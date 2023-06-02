@@ -1,4 +1,3 @@
-import colors from "colors";
 import jayson from 'jayson';
 import { DEFAULT_PORT, DEFAULT_LOCK_GAS_PRICE_FILE, createSession, explorer } from "./src/config.js";
 import { eth_gasPrice, eth_sendRawTransaction } from "./src/miner.js";
@@ -25,9 +24,9 @@ export async function claim(options: MinerOptions) {
         const action = withdraw(session, balance);
         const response = await session.transact({action})
         const trx_id = response.response?.transaction_id;
-        process.stdout.write(`${colors.blue(session.actor.toString())} claimed ${balance} ${explorer(session, trx_id)}\n`);
+        logger.info(`${session.actor.toString()} claimed ${balance} ${explorer(session, trx_id)}\n`);
     } else {
-        process.stdout.write(`${colors.blue(session.actor.toString())} has no balance to claim\n`);
+        logger.info(`${session.actor.toString()} has no balance to claim\n`);
     }
 }
 
@@ -68,7 +67,7 @@ export function start(options: StartOptions) {
     });
 
     server.http().listen(port);
-    process.stdout.write(`
+    logger.info(`
 
     ███████╗ ██████╗ ███████╗    ███████╗██╗   ██╗███╗   ███╗
     ██╔════╝██╔═══██╗██╔════╝    ██╔════╝██║   ██║████╗ ████║
@@ -76,7 +75,7 @@ export function start(options: StartOptions) {
     ██╔══╝  ██║   ██║╚════██║    ██╔══╝  ╚██╗ ██╔╝██║╚██╔╝██║
     ███████╗╚██████╔╝███████║    ███████╗ ╚████╔╝ ██║ ╚═╝ ██║
     ╚══════╝ ╚═════╝ ╚══════╝    ╚══════╝  ╚═══╝  ╚═╝     ╚═╝
-        EOS EVM Miner listening @ http://127.0.0.1:${colors.blue(port.toString())}
-            Your miner account is ${colors.blue(session.actor.toString())}
+        EOS EVM Miner listening @ http://127.0.0.1:${port.toString()}
+            Your miner account is ${session.actor.toString()}
     `);
 }

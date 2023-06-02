@@ -23,7 +23,6 @@
   "dependencies": {
     "@wharfkit/session": "^0.5.0",
     "@wharfkit/wallet-plugin-privatekey": "^0.5.0",
-    "colors": "latest",
     "commander": "latest",
     "dotenv": "latest",
     "ethereumjs-util": "latest",
