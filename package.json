@@ -28,13 +28,13 @@
     "dotenv": "latest",
     "ethereumjs-util": "latest",
     "jayson": "4.x",
-    "winston": "latest"
+    "tslog": "^4.8.2"
   },
   "devDependencies": {
     "@tsconfig/recommended": "latest",
     "@types/node": "latest",
+    "pkg": "latest",
     "tsx": "latest",
-    "typescript": "latest",
-    "pkg": "latest"
+    "typescript": "latest"
   }
 }

@@ -42,7 +42,7 @@ export function start(options: StartOptions) {
     const lockGasPrice = options.lockGasPrice ?? DEFAULT_LOCK_GAS_PRICE_FILE;
 
     // enable logging if verbose enabled
-    if (options.verbose) logger.silent = false;
+    if (options.verbose) logger.settings.type = "pretty";
 
     // create Wharfkit session
     const session = createSession(options);

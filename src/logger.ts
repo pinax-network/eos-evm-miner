@@ -1,13 +1,3 @@
-import winston from 'winston';
+import { Logger, ILogObj } from "tslog";
 
-export const logger = winston.createLogger({
-  level: 'info',
-  format: winston.format.json(),
-  silent: true,
-  defaultMeta: { service: 'eos-evm' },
-  transports: [
-    new winston.transports.Console({
-      format: winston.format.simple(),
-    }),
-  ],
-});
+export const logger: Logger<ILogObj> = new Logger({type: "hidden"});
