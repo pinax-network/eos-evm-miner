@@ -84,4 +84,6 @@ LOCK_GAS_PRICE=0x22ecb25c00
 - [x] Relay Ethereum transactions to the EOS EVM
 - [x] Get dynamic gas price from the EOS Network
 - [x] set fixed Gas price (in `hex` value)
-- [x] Claim rewards
+- [x] `claim` CLI command to claim miner rewards
+- [x] `open` CLI command to open miner balance
+- [x] `powerup` CLI command to powerup miner CPU & NET
