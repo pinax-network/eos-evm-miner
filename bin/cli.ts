@@ -3,7 +3,7 @@
 import { Command } from "commander";
 import pkg from "../package.json";
 import { DEFAULT_LOCK_GAS_PRICE, DEFAULT_MINER_PERMISSION, DEFAULT_PORT } from "../src/config.js";
-import { claim, start } from "../index.js";
+import { claim, start, open, powerup } from "../index.js";
 
 const program = new Command();
 program.name(pkg.name)
@@ -22,6 +22,19 @@ defaultOptions(program.command("start"))
 defaultOptions(program.command("claim"))
     .description("Claim EOS EVM miner rewards")
     .action(claim);
+
+// Open EOS EVM Miner balance
+defaultOptions(program.command("open"))
+    .description("Open EOS EVM miner balance")
+    .action(open);
+
+// Powerup EOS EVM Miner CPU & NET resources
+defaultOptions(program.command("powerup"))
+    .description("Powerup EOS EVM Miner CPU & NET resources")
+    .argument('net-frac <number>', 'NET fraction (ex: 1000)')
+    .argument('cpu-frac <number>', 'CPU fraction (ex: 100000)')
+    .argument('max-payment <string>', 'Max payment (ex: "0.1000 EOS")')
+    .action(powerup);
 
 program.command('completion').description('Generate the autocompletion script for the specified shell');
 program.command('help').description('Display help for command');

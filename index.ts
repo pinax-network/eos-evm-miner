@@ -1,7 +1,7 @@
 import jayson from 'jayson';
 import { DEFAULT_PORT, LOCK_GAS_PRICE, createSession, explorer } from "./src/config.js";
 import { eth_gasPrice, eth_sendRawTransaction } from "./src/miner.js";
-import { withdraw } from "./src/actions.js";
+import * as actions from "./src/actions.js";
 import { balances } from "./src/tables.js";
 import { logger } from "./src/logger.js";
 
@@ -21,12 +21,47 @@ export async function claim(options: MinerOptions) {
     // withdraw if balance exists
     if ( result ) {
         const balance = result.balance.balance;
-        const action = withdraw(session, balance);
+        const action = actions.withdraw(session, balance);
         const response = await session.transact({action})
         const trx_id = response.response?.transaction_id;
-        logger.info(`${session.actor.toString()} claimed ${balance} ${explorer(session, trx_id)}\n`);
+        console.log(`${session.actor.toString()} claimed ${balance} ${explorer(session, trx_id)}`);
     } else {
-        logger.info(`${session.actor.toString()} has no balance to claim\n`);
+        console.log(`${session.actor.toString()} has no balance to claim`);
+    }
+}
+
+export interface PowerupOptions extends MinerOptions {
+    netFrac: string;
+    cpuFrac: string;
+    maxPayment: string;
+}
+
+export async function powerup(net_frac: string, cpu_frac: string, max_payment: string, options: PowerupOptions) {
+    // create Wharfkit session
+    const session = createSession(options);
+
+    // Push on-chain action
+    const action = actions.powerup(session, net_frac, cpu_frac, max_payment);
+    const response = await session.transact({action})
+    const trx_id = response.response?.transaction_id;
+    console.log(`${session.actor.toString()} powerup success ${explorer(session, trx_id)}`);
+}
+
+export async function open(options: MinerOptions) {
+    // create Wharfkit session
+    const session = createSession(options);
+
+    // lookup current balance
+    const result = await balances(session);
+
+    // withdraw if balance exists
+    if ( !result ) {
+        const action = actions.open(session);
+        const response = await session.transact({action})
+        const trx_id = response.response?.transaction_id;
+        console.log(`${session.actor.toString()} balance opened ${explorer(session, trx_id)}`);
+    } else {
+        console.log(`${session.actor.toString()} balance is already opened`);
     }
 }
 
