@@ -31,9 +31,9 @@ defaultOptions(program.command("open"))
 // Powerup EOS EVM Miner CPU & NET resources
 defaultOptions(program.command("powerup"))
     .description("Powerup EOS EVM Miner CPU & NET resources")
-    .argument('net-frac <number>', 'NET fraction (ex: 1000)')
-    .argument('cpu-frac <number>', 'CPU fraction (ex: 100000)')
-    .argument('max-payment <string>', 'Max payment (ex: "0.1000 EOS")')
+    .argument('<number>', 'NET fraction (ex: 1000)')
+    .argument('<number>', 'CPU fraction (ex: 100000)')
+    .argument('<string>', 'Max payment (ex: "0.1000 EOS")')
     .action(powerup);
 
 program.command('completion').description('Generate the autocompletion script for the specified shell');
