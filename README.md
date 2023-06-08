@@ -45,10 +45,10 @@ Options:
   --private-key <string>  Miner private key (ex: "PVT_K1_...")
   --account <string>      Miner account name (ex: "miner.evm")
   --permission <string>   Miner permission (default: "active")
-  -p --port <int>         JSON RPC listens on port number (listen for incoming Ethereum
-                          transactions). (default: "50305")
+  -p --port <int>         JSON RPC listens on port number (listen for incoming Ethereum transactions).
+                          (default: "50305")
   --verbose               Enable verbose logging (default: false)
-  --lock-gas-price        Lock gas price
+  --lock-gas-price        Lock gas price as hex value (ex: "0x22ecb25c00")
   -h, --help              display help for command
 ```
 
@@ -76,12 +76,12 @@ CHAIN_ID=aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906
 
 # JSON RPC (optional)
 PORT=50305
-LOCK_GAS_PRICE=gas_price.lock
+LOCK_GAS_PRICE=0x22ecb25c00
 ```
 
 ## Features
 
 - [x] Relay Ethereum transactions to the EOS EVM
-- [x] Get gas price from the EOS Network
-  - [x] default, uses gas lock file (gas price does not change)
+- [x] Get dynamic gas price from the EOS Network
+- [x] set fixed Gas price (in `hex` value)
 - [x] Claim rewards

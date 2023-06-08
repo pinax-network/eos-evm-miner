@@ -3,16 +3,15 @@ import { WalletPluginPrivateKey } from "@wharfkit/wallet-plugin-privatekey";
 import "dotenv/config";
 
 // defaults
-export const DEFAULT_LOCK_GAS_PRICE = true;
 export const DEFAULT_MINER_PERMISSION = 'active';
 export const DEFAULT_PORT = 50305;
+export const DEFAULT_LOCK_GAS_PRICE = "0x22ecb25c00";
 export const DEFAULT_CHAIN_ID = 'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906';
 export const DEFAULT_RPC_ENDPOINT = 'https://eos.greymass.com';
-export const DEFAULT_LOCK_GAS_PRICE_FILE = 'gas_price.lock';
 
 // optional
 export const PORT = parseInt(process.env.PORT ?? String(DEFAULT_PORT));
-export const LOCK_GAS_PRICE = JSON.parse(process.env.LOCK_GAS_PRICE ?? String(DEFAULT_LOCK_GAS_PRICE));
+export const LOCK_GAS_PRICE = process.env.LOCK_GAS_PRICE;
 export const MINER_PERMISSION = process.env.MINER_PERMISSION ?? DEFAULT_MINER_PERMISSION;
 export const CHAIN_ID = process.env.CHAIN_ID ?? DEFAULT_CHAIN_ID;
 export const RPC_ENDPOINT = process.env.RPC_ENDPOINT ?? DEFAULT_RPC_ENDPOINT;

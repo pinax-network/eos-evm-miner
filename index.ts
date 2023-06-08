@@ -1,5 +1,5 @@
 import jayson from 'jayson';
-import { DEFAULT_PORT, DEFAULT_LOCK_GAS_PRICE_FILE, createSession, explorer } from "./src/config.js";
+import { DEFAULT_PORT, LOCK_GAS_PRICE, createSession, explorer } from "./src/config.js";
 import { eth_gasPrice, eth_sendRawTransaction } from "./src/miner.js";
 import { withdraw } from "./src/actions.js";
 import { balances } from "./src/tables.js";
@@ -38,7 +38,7 @@ export interface StartOptions extends MinerOptions {
 
 export function start(options: StartOptions) {
     const port = options.port || DEFAULT_PORT;
-    const lockGasPrice = options.lockGasPrice ?? DEFAULT_LOCK_GAS_PRICE_FILE;
+    const lockGasPrice = options.lockGasPrice ?? LOCK_GAS_PRICE;
 
     // enable logging if verbose enabled
     if (options.verbose) logger.settings.type = "pretty";
