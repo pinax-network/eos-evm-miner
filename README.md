@@ -48,6 +48,8 @@ Options:
                                "127.0.0.1")
   --metrics-listen-port <int>  The process will listen on this port for
                                Prometheus metrics requests (default: "9102")
+  --metrics-disabled           If set, will not send metrics to Prometheus
+                               (default: false)
   --verbose                    Enable verbose logging (default: false)
   --lock-gas-price             Lock gas price as hex value (ex: "0x22ecb25c00")
   -h, --help                   display help for command

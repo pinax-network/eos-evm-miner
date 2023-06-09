@@ -1,6 +1,5 @@
 import client, { Counter } from "prom-client";
 import http from "node:http";
-import { logger } from "./logger.js";
 
 // Prometheus Exporter
 export const register = new client.Registry();
