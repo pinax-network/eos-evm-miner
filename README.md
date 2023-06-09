@@ -90,6 +90,9 @@ PORT=50305
 HOSTNAME=127.0.0.1
 LOCK_GAS_PRICE=0x22ecb25c00
 
+# Prometheus Metrics
+PROMETHEUS_PORT=9102
+
 # CLI (optional)
 VERBOSE=true
 ```
