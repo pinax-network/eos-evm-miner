@@ -1,9 +1,14 @@
-FROM node:alpine
+FROM node:20 AS build-env
 
+WORKDIR /app
 COPY package*.json ./
 RUN npm ci
 
 COPY . .
 RUN npm run build
 
-ENTRYPOINT ["node", "dist/bin/cli.js"]
+FROM gcr.io/distroless/nodejs20-debian11
+COPY --from=build-env /app /app
+WORKDIR /app
+
+CMD ["dist/bin/cli.js", "start"]
