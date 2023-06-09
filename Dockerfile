@@ -1,8 +1,6 @@
 FROM oven/bun
 
-COPY bun.lockb ./
-RUN bun install
-
 COPY . .
+RUN bun install
 
 ENTRYPOINT [ "bun", "./bin/cli.ts" ]
