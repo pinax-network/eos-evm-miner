@@ -94,6 +94,7 @@ LOCK_GAS_PRICE=0x22ecb25c00
 
 # Prometheus Metrics
 PROMETHEUS_PORT=9102
+METRICS_DISABLED=false
 
 # CLI (optional)
 VERBOSE=true
