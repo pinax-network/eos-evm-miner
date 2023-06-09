@@ -1,9 +1,5 @@
 FROM node:alpine
 
-EXPOSE 50305
-
-WORKDIR /app
-
 COPY package*.json ./
 RUN npm ci
 
