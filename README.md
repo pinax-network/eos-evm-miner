@@ -59,6 +59,16 @@ docker build -t eos-evm-miner .
 docker run -it --rm -p 50305:50305 --env-file .env eos-evm-miner start
 ```
 
+## Deploy to Cloud Run
+
+> https://console.cloud.google.com/run
+
+- **DockerHub**: [`gcr.io/pinaxnetwork/eos-evm-miner`](https://hub.docker.com/r/pinaxnetwork/eos-evm-miner)
+
+```
+gcloud run deploy
+```
+
 ## Environment Variables
 
 **`.env`**

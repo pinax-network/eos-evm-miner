@@ -9,7 +9,7 @@
   "exports": "./dist/index.js",
   "scripts": {
     "build": "tsc",
-    "start": "tsx bin/cli.ts start",
+    "start": "tsx bin/cli.ts start --verbose",
     "pkg": "tsc && pkg dist/bin/cli.js --target linux-x64,mac-x64,win-x64,mac-arm64 --output eos-evm-miner",
     "test": "tsx **/*.spec.ts"
   },

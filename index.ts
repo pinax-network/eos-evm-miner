@@ -102,7 +102,7 @@ export function start(options: StartOptions) {
     });
 
     server.http().listen(port);
-    logger.info(`
+    console.log(`
 
     ███████╗ ██████╗ ███████╗    ███████╗██╗   ██╗███╗   ███╗
     ██╔════╝██╔═══██╗██╔════╝    ██╔════╝██║   ██║████╗ ████║
