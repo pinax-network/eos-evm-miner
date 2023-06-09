@@ -11,6 +11,7 @@ export const DEFAULT_LOCK_GAS_PRICE = "0x22ecb25c00";
 export const DEFAULT_CHAIN_ID = 'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906';
 export const DEFAULT_RPC_ENDPOINT = 'https://eos.greymass.com';
 export const DEFAULT_METRICS_DISABLED = false;
+export const DEFAULT_VERBOSE = false;
 
 // optional
 export const PORT = parseInt(process.env.PORT ?? String(DEFAULT_PORT));
@@ -21,6 +22,7 @@ export const CHAIN_ID = process.env.CHAIN_ID ?? DEFAULT_CHAIN_ID;
 export const RPC_ENDPOINT = process.env.RPC_ENDPOINT ?? DEFAULT_RPC_ENDPOINT;
 export const HOSTNAME = process.env.HOSTNAME ?? DEFAULT_HOSTNAME;
 export const METRICS_DISABLED = JSON.parse(process.env.METRICS_DISABLED ?? String(DEFAULT_METRICS_DISABLED)) as boolean;
+export const VERBOSE = JSON.parse(process.env.VERBOSE ?? String(DEFAULT_VERBOSE)) as boolean;
 
 interface CreateSessionOptions {
     privateKey?: string;

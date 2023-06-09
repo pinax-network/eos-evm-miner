@@ -1,6 +1,6 @@
 import { JSONRPCServer } from "json-rpc-2.0";
 import { Session } from "@wharfkit/session";
-import { DEFAULT_HOSTNAME, DEFAULT_PORT, HOSTNAME, LOCK_GAS_PRICE, PORT,PROMETHEUS_PORT, DEFAULT_PROMETHEUS_PORT, createSession, METRICS_DISABLED, DEFAULT_METRICS_DISABLED } from "../src/config.js";
+import { DEFAULT_HOSTNAME, DEFAULT_PORT, HOSTNAME, LOCK_GAS_PRICE, PORT,PROMETHEUS_PORT, DEFAULT_PROMETHEUS_PORT, createSession, METRICS_DISABLED, DEFAULT_METRICS_DISABLED, DEFAULT_VERBOSE, VERBOSE } from "../src/config.js";
 import { logger } from "../src/logger.js";
 import { DefaultOptions } from "./cli.js";
 import { eth_sendRawTransaction } from "../src/eth_sendRawTransaction.js";
@@ -22,13 +22,14 @@ export function start (options: StartOptions) {
     const metricsDisabled = options.metricsDisabled ?? METRICS_DISABLED ?? DEFAULT_METRICS_DISABLED;
     const metricsListenPort = options.metricsListenPort ?? PROMETHEUS_PORT ?? DEFAULT_PROMETHEUS_PORT;
     const lockGasPrice = options.lockGasPrice ?? LOCK_GAS_PRICE;
+    const verbose = options.verbose ?? VERBOSE ?? DEFAULT_VERBOSE;
 
     // create Wharfkit session
     const session = createSession(options);
     const server = new JSONRPCServer();
 
     // enable logging if verbose enabled
-    if (options.verbose) {
+    if (verbose) {
         logger.settings.type = "json";
         console.log(banner(session, port, hostname, metricsListenPort, metricsDisabled));
     }

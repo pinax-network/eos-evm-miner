@@ -20,7 +20,7 @@ defaultOptions(program.command("start"))
     .option('--hostname <string>', 'JSON RPC listens on hostname (listen for incoming Ethereum transactions).', DEFAULT_HOSTNAME)
     .option('--metrics-listen-port <int>', 'The process will listen on this port for Prometheus metrics requests', String(DEFAULT_PROMETHEUS_PORT))
     .option('--metrics-disabled', 'If set, will not send metrics to Prometheus', DEFAULT_METRICS_DISABLED)
-    .option('--verbose', 'Enable verbose logging', false)
+    .option('--verbose', 'Enable verbose logging')
     .option('--lock-gas-price', `Lock gas price as hex value (ex: "${DEFAULT_LOCK_GAS_PRICE}")`)
     .action(options => {
         start(options);
