@@ -1,6 +1,10 @@
-name: CI
+name: Release
+on:
+  release:
+    types: [published]
 
-on: push
+permissions:
+  contents: write
 
 jobs:
   build:
@@ -12,3 +16,8 @@ jobs:
           bun-version: latest
       - run: bun install
       - run: bun test
+      - run: bun build
+      - uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            eos-evm-miner

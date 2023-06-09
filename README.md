@@ -75,7 +75,7 @@ gcloud run deploy
 ```env
 # miner (required)
 PRIVATE_KEY=PVT_K1_...
-MINER_ACCOUNT=miner.evm
+MINER_ACCOUNT=miner.enf
 
 # miner (optional)
 MINER_PERMISSION=active
@@ -87,14 +87,21 @@ CHAIN_ID=aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906
 # JSON RPC (optional)
 PORT=50305
 LOCK_GAS_PRICE=0x22ecb25c00
+
+# CLI (optional)
+VERBOSE=true
 ```
 
 ## Features
 
-- [x] Relay Ethereum transactions to the EOS EVM
-- [x] Get dynamic gas price from the EOS Network
-- [x] set fixed Gas price (in `hex` value)
-- [x] `claim` CLI command to claim miner rewards
-- [x] `open` CLI command to open miner balance
-- [x] `powerup` CLI command to powerup miner CPU & NET
-- [x] "Distroless" Docker image
+- [x] JSON RPC methods
+  - [x] `eth_gasPrice` - get dynamic or static gas price
+  - [x] `eth_sendRawTransaction` - send raw transaction to Nodeos RPC
+- [x] CLI commands
+  - [x] `start` - start miner JSON RPC server
+  - [x] `claim` - claim miner rewards
+  - [x] `open` - open miner balance
+  - [x] `powerup` - powerup miner CPU & NET
+- [x] `Bun` binary builds
+- [x] Docker Container
+  - [ ] "Distroless" Docker image

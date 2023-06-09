@@ -1,39 +1,36 @@
 {
   "private": true,
   "name": "@enf/eos-evm-miner",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "EOS EVM miner",
-  "bin": {
-    "eos-evm-miner": "./dist/bin/cli.js"
-  },
+  "type": "module",
   "exports": "./dist/index.js",
   "scripts": {
-    "build": "tsc",
-    "start": "tsx bin/cli.ts start --verbose",
-    "pkg": "tsc && pkg dist/bin/cli.js --target linux-x64,mac-x64,win-x64,mac-arm64 --output eos-evm-miner",
-    "test": "tsx **/*.spec.ts"
+    "start": "bun ./bin/cli.ts start --verbose",
+    "build": "bun build --compile ./bin/cli.ts --outfile eos-evm-miner",
+    "test": "bun test"
   },
   "contributors": [
     "Yarkin",
     "Matias Romeo",
     "Nathan James",
-    "Denis Carriere"
+    "Denis Carriere <denis@pinax.network>",
+    "Johnathan Leung <johnathan.leung@pinax.network>"
   ],
   "license": "MIT",
   "dependencies": {
+    "@ethereumjs/devp2p": "latest",
     "@wharfkit/session": "^0.5.0",
     "@wharfkit/wallet-plugin-privatekey": "^0.5.0",
     "commander": "latest",
     "dotenv": "latest",
-    "ethereumjs-util": "latest",
-    "jayson": "4.x",
-    "tslog": "^4.8.2"
+    "json-rpc-2.0": "latest",
+    "tslog": "latest"
   },
   "devDependencies": {
     "@tsconfig/recommended": "latest",
     "@types/node": "latest",
-    "pkg": "latest",
-    "tsx": "latest",
+    "bun-types": "latest",
     "typescript": "latest"
   }
 }

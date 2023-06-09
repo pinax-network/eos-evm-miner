@@ -3,6 +3,8 @@
 *-x64
 *-x64.exe
 *.lock
+eos-evm-miner
+package-lock.json
 
 # Node.js
 node_modules/

@@ -1,14 +1,8 @@
-FROM node:20 AS build-env
+FROM oven/bun
 
-WORKDIR /app
-COPY package*.json ./
-RUN npm ci
+COPY bun.lockb ./
+RUN bun install
 
 COPY . .
-RUN npm run build
 
-FROM gcr.io/distroless/nodejs20-debian11
-COPY --from=build-env /app /app
-WORKDIR /app
-
-CMD ["dist/bin/cli.js", "start"]
+ENTRYPOINT [ "bun", "./bin/cli.ts" ]

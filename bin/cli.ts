@@ -1,9 +1,12 @@
 #!/usr/bin/env node
 
 import { Command } from "commander";
-import pkg from "../package.json";
+import pkg from "../package.json" assert { type: "json" };
 import { DEFAULT_LOCK_GAS_PRICE, DEFAULT_MINER_PERMISSION, DEFAULT_PORT } from "../src/config.js";
-import { claim, start, open, powerup } from "../index.js";
+import { start } from "../index.js";
+import { claim } from "./claim.js";
+import { open } from "./open.js";
+import { powerup } from "./powerup.js";
 
 const program = new Command();
 program.name(pkg.name)
@@ -16,7 +19,9 @@ defaultOptions(program.command("start"))
     .option('-p --port <int>', 'JSON RPC listens on port number (listen for incoming Ethereum transactions).', String(DEFAULT_PORT))
     .option('--verbose', 'Enable verbose logging', false)
     .option('--lock-gas-price', `Lock gas price as hex value (ex: "${DEFAULT_LOCK_GAS_PRICE}")`)
-    .action(start);
+    .action(options => {
+        start(options);
+    });
 
 // Claim EOS EVM Miner
 defaultOptions(program.command("claim"))
@@ -41,8 +46,15 @@ program.command('help').description('Display help for command');
 program.showHelpAfterError();
 program.parse();
 
+export interface DefaultOptions {
+    privateKey?: string;
+    actor?: string;
+    permission?: string;
+}
+
 function defaultOptions(command: Command) {
-    return command.option('--private-key <string>', 'Miner private key (ex: "PVT_K1_...")')
+    return command
+        .option('--private-key <string>', 'Miner private key (ex: "PVT_K1_...")')
         .option('--account <string>', 'Miner account name (ex: "miner.evm")')
         .option('--permission <string>', 'Miner permission', DEFAULT_MINER_PERMISSION)
 }
