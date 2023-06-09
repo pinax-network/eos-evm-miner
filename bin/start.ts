@@ -1,13 +1,15 @@
 import { JSONRPCServer } from "json-rpc-2.0";
 import { Session } from "@wharfkit/session";
-import { DEFAULT_HOSTNAME, DEFAULT_PORT, HOSTNAME, LOCK_GAS_PRICE, PORT, createSession } from "../src/config.js";
+import { DEFAULT_HOSTNAME, DEFAULT_PORT, HOSTNAME, LOCK_GAS_PRICE, PORT,PROMETHEUS_PORT, DEFAULT_PROMETHEUS_PORT, createSession } from "../src/config.js";
 import { logger } from "../src/logger.js";
 import { DefaultOptions } from "./cli.js";
 import { eth_sendRawTransaction } from "../src/eth_sendRawTransaction.js";
 import { eth_gasPrice } from "../src/eth_gasPrice.js";
+import * as prometheus from "../src/prometheus.js"
 
 export interface StartOptions extends DefaultOptions {
     port?: number;
+    metricsListenPort?: number;
     hostname?: string;
     verbose?: boolean;
     lockGasPrice?: string;
@@ -16,6 +18,7 @@ export interface StartOptions extends DefaultOptions {
 export function start (options: StartOptions) {
     const port = options.port ?? PORT ?? DEFAULT_PORT;
     const hostname = options.hostname ?? HOSTNAME ?? DEFAULT_HOSTNAME;
+    const metricsListenPort = options.metricsListenPort ?? PROMETHEUS_PORT ?? DEFAULT_PROMETHEUS_PORT;
     const lockGasPrice = options.lockGasPrice ?? LOCK_GAS_PRICE;
 
     // create Wharfkit session
@@ -24,16 +27,24 @@ export function start (options: StartOptions) {
 
     // enable logging if verbose enabled
     if (options.verbose) {
-        logger.settings.type = "pretty";
-        console.log(banner(session, port, hostname));
+        logger.settings.type = "json";
+        console.log(banner(session, port, hostname, metricsListenPort));
     }
 
-    server.addMethod("eth_sendRawTransaction", params => {
-        return eth_sendRawTransaction(session, params)
+    server.addMethod("eth_sendRawTransaction", async params => {
+        prometheus.sendRawTransaction.requests?.inc();
+        const result = await eth_sendRawTransaction(session, params)
+        prometheus.sendRawTransaction.success?.inc();
+        return result;
     });
-    server.addMethod("eth_gasPrice", () => {
-        return eth_gasPrice(session, lockGasPrice)
+    server.addMethod("eth_gasPrice", async () => {
+        prometheus.gasPrice.requests?.inc();
+        const result = eth_gasPrice(session, lockGasPrice)
+        prometheus.gasPrice.success?.inc();
+        return result;
     });
+
+    prometheus.listen(metricsListenPort, hostname);
 
     return Bun.serve({
         port,
@@ -42,7 +53,7 @@ export function start (options: StartOptions) {
         fetch: async (request: Request) => {
             const url = new URL(request.url);
             if ( request.method == "GET" ) {
-                if ( url.pathname == "/" ) return new Response(banner(session, port, hostname));
+                if ( url.pathname == "/" ) return new Response(banner(session, port, hostname, metricsListenPort));
                 const info = await session.client.v1.chain.get_info();
                 return toJSON(info.toJSON());
             }
@@ -66,7 +77,7 @@ function toJSON(obj: any, status: number = 200) {
     return new Response(body, { status, headers });
 }
 
-function banner( session: Session, port: number, hostname: string ) {
+function banner( session: Session, port: number, hostname: string, metricsListenPort: number ) {
     return `
 
         ███████╗ ██████╗ ███████╗    ███████╗██╗   ██╗███╗   ███╗
@@ -76,6 +87,7 @@ function banner( session: Session, port: number, hostname: string ) {
         ███████╗╚██████╔╝███████║    ███████╗ ╚████╔╝ ██║ ╚═╝ ██║
         ╚══════╝ ╚═════╝ ╚══════╝    ╚══════╝  ╚═══╝  ╚═╝     ╚═╝
                EOS EVM Miner listening @ ${hostname}:${port.toString()}
+               Prometheus metrics listening @ ${hostname}:${metricsListenPort.toString()}
                    Your miner account is ${session.actor.toString()}
         ${session.walletPlugin.metadata.publicKey}
 `

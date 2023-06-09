@@ -25,6 +25,7 @@
     "commander": "latest",
     "dotenv": "latest",
     "json-rpc-2.0": "latest",
+    "prom-client": "latest",
     "tslog": "latest"
   },
   "devDependencies": {

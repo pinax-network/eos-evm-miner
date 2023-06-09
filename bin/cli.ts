@@ -2,7 +2,7 @@
 
 import { Command } from "commander";
 import pkg from "../package.json" assert { type: "json" };
-import { DEFAULT_HOSTNAME, DEFAULT_LOCK_GAS_PRICE, DEFAULT_MINER_PERMISSION, DEFAULT_PORT } from "../src/config.js";
+import { DEFAULT_HOSTNAME, DEFAULT_LOCK_GAS_PRICE, DEFAULT_MINER_PERMISSION, DEFAULT_PORT, DEFAULT_PROMETHEUS_PORT } from "../src/config.js";
 import { start } from "../index.js";
 import { claim } from "./claim.js";
 import { open } from "./open.js";
@@ -18,6 +18,7 @@ defaultOptions(program.command("start"))
     .description("Start JSON RPC Server")
     .option('-p --port <int>', 'JSON RPC listens on port number (listen for incoming Ethereum transactions).', String(DEFAULT_PORT))
     .option('--hostname <string>', 'JSON RPC listens on hostname (listen for incoming Ethereum transactions).', DEFAULT_HOSTNAME)
+    .option('--metrics-listen-port <int>', 'The process will listen on this port for Prometheus metrics requests', String(DEFAULT_PROMETHEUS_PORT))
     .option('--verbose', 'Enable verbose logging', false)
     .option('--lock-gas-price', `Lock gas price as hex value (ex: "${DEFAULT_LOCK_GAS_PRICE}")`)
     .action(options => {

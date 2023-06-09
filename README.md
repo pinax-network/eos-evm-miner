@@ -37,14 +37,20 @@ Usage: @enf/eos-evm-miner start [options]
 Start JSON RPC Server
 
 Options:
-  --private-key <string>  Miner private key (ex: "PVT_K1_...")
-  --account <string>      Miner account name (ex: "miner.evm")
-  --permission <string>   Miner permission (default: "active")
-  -p --port <int>         JSON RPC listens on port number (listen for incoming Ethereum transactions).
-                          (default: "50305")
-  --verbose               Enable verbose logging (default: false)
-  --lock-gas-price        Lock gas price as hex value (ex: "0x22ecb25c00")
-  -h, --help              display help for command
+  --private-key <string>       Miner private key (ex: "PVT_K1_...")
+  --account <string>           Miner account name (ex: "miner.evm")
+  --permission <string>        Miner permission (default: "active")
+  -p --port <int>              JSON RPC listens on port number (listen for
+                               incoming Ethereum transactions). (default:
+                               "50305")
+  --hostname <string>          JSON RPC listens on hostname (listen for
+                               incoming Ethereum transactions). (default:
+                               "127.0.0.1")
+  --metrics-listen-port <int>  The process will listen on this port for
+                               Prometheus metrics requests (default: "9102")
+  --verbose                    Enable verbose logging (default: false)
+  --lock-gas-price             Lock gas price as hex value (ex: "0x22ecb25c00")
+  -h, --help                   display help for command
 ```
 
 ## Docker environment
@@ -124,3 +130,6 @@ src/eth_gasPrice.spec.ts:
 - [x] `Bun` binary builds
 - [x] Docker Container
   - [ ] "Distroless" Docker image
+- [x] Prometheus metrics
+  - [x] total `eth_gasPrice` requests & success
+  - [x] total `eth_sendRawTransaction` requests & success
