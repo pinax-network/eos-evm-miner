@@ -56,7 +56,7 @@ Options:
 
 ```bash
 docker build -t eos-evm-miner .
-docker run -it --rm -p 50305:50305 --env-file .env eos-evm-miner start
+docker run -it --rm -p 50305:50305 --env-file .env eos-evm-miner
 ```
 
 ## Deploy to Cloud Run
@@ -97,3 +97,4 @@ LOCK_GAS_PRICE=0x22ecb25c00
 - [x] `claim` CLI command to claim miner rewards
 - [x] `open` CLI command to open miner balance
 - [x] `powerup` CLI command to powerup miner CPU & NET
+- [x] "Distroless" Docker image
