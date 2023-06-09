@@ -1,8 +1,6 @@
 # EOS EVM Miner
 
-This tool allows you to accept Ethereum transactions and relay them to the EOS EVM.
-
-For every transaction that you relay you will receive a reward in the form of EOS tokens.
+> Accepts Ethereum transactions and relays them to EOS EVM network.
 
 ## References
 
@@ -17,7 +15,7 @@ For every transaction that you relay you will receive a reward in the form of EO
 ## Quickstart
 
 ```
-$ eos-evm-miner start
+$ eos-evm-miner start --verbose
 
 ███████╗ ██████╗ ███████╗    ███████╗██╗   ██╗███╗   ███╗
 ██╔════╝██╔═══██╗██╔════╝    ██╔════╝██║   ██║████╗ ████║
@@ -26,7 +24,7 @@ $ eos-evm-miner start
 ███████╗╚██████╔╝███████║    ███████╗ ╚████╔╝ ██║ ╚═╝ ██║
 ╚══════╝ ╚═════╝ ╚══════╝    ╚══════╝  ╚═══╝  ╚═╝     ╚═╝
     EOS EVM Miner listening @ http://127.0.0.1:50305
-        Your miner account is miner.evm
+        Your miner account is miner.enf
 ```
 
 ## Help
@@ -87,6 +85,29 @@ LOCK_GAS_PRICE=0x22ecb25c00
 
 # CLI (optional)
 VERBOSE=true
+```
+
+## Build from source
+
+```
+$ bun build --compile ./bin/cli.ts --outfile eos-evm-miner
+[0.03ms] ".env"
+  [31ms]  bundle  304 modules
+ [101ms] compile  eos-evm-miner
+```
+
+## Testing
+
+```bash
+$ bun test
+bun test v0.6.7 (59d7c47e)
+[0.28ms] ".env"
+
+src/eth_sendRawTransaction.spec.ts:
+✓ eth_sendRawTransaction [1.45ms]
+
+src/eth_gasPrice.spec.ts:
+✓ eth_gasPrice [226.88ms]
 ```
 
 ## Features
