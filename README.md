@@ -40,17 +40,15 @@ Options:
   --private-key <string>       Miner private key (ex: "PVT_K1_...")
   --account <string>           Miner account name (ex: "miner.evm")
   --permission <string>        Miner permission (default: "active")
-  -p --port <int>              JSON RPC listens on port number (listen for
-                               incoming Ethereum transactions). (default:
+  -p --port <int>              JSON RPC listens on port number, listen for
+                               incoming Ethereum transactions. (default:
                                "50305")
-  --hostname <string>          JSON RPC listens on hostname (listen for
-                               incoming Ethereum transactions). (default:
-                               "127.0.0.1")
+  --hostname <string>          JSON RPC listens on hostname, listen for
+                               incoming Ethereum transactions (ex: "127.0.0.1)"
   --metrics-listen-port <int>  The process will listen on this port for
                                Prometheus metrics requests (default: "9102")
   --metrics-disabled           If set, will not send metrics to Prometheus
-                               (default: false)
-  --verbose                    Enable verbose logging (default: false)
+  --verbose                    Enable verbose logging
   --lock-gas-price             Lock gas price as hex value (ex: "0x22ecb25c00")
   -h, --help                   display help for command
 ```
