@@ -18,7 +18,7 @@ export interface StartOptions extends DefaultOptions {
 
 export function start (options: StartOptions) {
     const port = options.port ?? PORT ?? DEFAULT_PORT;
-    const hostname = options.hostname ?? HOSTNAME ?? DEFAULT_HOSTNAME;
+    const hostname = options.hostname ?? HOSTNAME;
     const metricsDisabled = options.metricsDisabled ?? METRICS_DISABLED ?? DEFAULT_METRICS_DISABLED;
     const metricsListenPort = options.metricsListenPort ?? PROMETHEUS_PORT ?? DEFAULT_PROMETHEUS_PORT;
     const lockGasPrice = options.lockGasPrice ?? LOCK_GAS_PRICE;
@@ -82,7 +82,7 @@ function toJSON(obj: any, status: number = 200) {
     return new Response(body, { status, headers });
 }
 
-function banner( session: Session, port: number, hostname: string, metricsListenPort: number, metricsDisabled?: boolean ) {
+function banner( session: Session, port: number, hostname?: string, metricsListenPort?: number, metricsDisabled?: boolean ) {
     let text = `
 
         ███████╗ ██████╗ ███████╗    ███████╗██╗   ██╗███╗   ███╗
@@ -92,8 +92,8 @@ function banner( session: Session, port: number, hostname: string, metricsListen
         ███████╗╚██████╔╝███████║    ███████╗ ╚████╔╝ ██║ ╚═╝ ██║
         ╚══════╝ ╚═════╝ ╚══════╝    ╚══════╝  ╚═══╝  ╚═╝     ╚═╝
 `
-    text += `                EOS EVM Miner listening @ ${hostname}:${port.toString()}\n`
-    if ( !metricsDisabled ) text += `              Prometheus metrics listening @ ${hostname}:${metricsListenPort.toString()}\n`;
+    text += `                EOS EVM Miner listening @ ${hostname ?? DEFAULT_HOSTNAME}:${port.toString()}\n`
+    if ( !metricsDisabled ) text += `              Prometheus metrics listening @ ${hostname ?? DEFAULT_HOSTNAME}:${metricsListenPort?.toString()}\n`;
     text += `                   Your miner account is ${session.actor.toString()}\n`;
     text += `        ${session.walletPlugin.metadata.publicKey}\n`
     return text;

@@ -30,9 +30,9 @@ export const sendRawTransaction = {
     success: registerCounter("eth_send_raw_transaction_success", "The number of eth_sendRawTransaction successful request received"),
 }
 
-export async function listen(port: number, address: string) {
+export async function listen(port: number, hostname?: string) {
     return new Promise(resolve => {
-        server.listen(port, address, () => {
+        server.listen(port, hostname, () => {
             resolve(true);
         });
     })

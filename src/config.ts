@@ -20,7 +20,7 @@ export const LOCK_GAS_PRICE = process.env.LOCK_GAS_PRICE;
 export const MINER_PERMISSION = process.env.MINER_PERMISSION ?? DEFAULT_MINER_PERMISSION;
 export const CHAIN_ID = process.env.CHAIN_ID ?? DEFAULT_CHAIN_ID;
 export const RPC_ENDPOINT = process.env.RPC_ENDPOINT ?? DEFAULT_RPC_ENDPOINT;
-export const HOSTNAME = process.env.HOSTNAME ?? DEFAULT_HOSTNAME;
+export const HOSTNAME = process.env.HOSTNAME;
 export const METRICS_DISABLED = JSON.parse(process.env.METRICS_DISABLED ?? String(DEFAULT_METRICS_DISABLED)) as boolean;
 export const VERBOSE = JSON.parse(process.env.VERBOSE ?? String(DEFAULT_VERBOSE)) as boolean;
 
