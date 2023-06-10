@@ -10,8 +10,8 @@ jobs:
   build:
     strategy:
       matrix:
-        platform: [ubuntu, macos]
-    runs-on: ${{ matrix.platform }}-latest
+        platform: [linux-x64, macos-arm64, macos-x64, win-x64]
+    runs-on: ${{ matrix.platform }}
     steps:
       - uses: actions/checkout@v3
       - uses: oven-sh/setup-bun@v1
