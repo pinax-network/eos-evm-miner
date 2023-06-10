@@ -17,7 +17,6 @@ jobs:
       - run: bun install
       - run: bun test
       - run: bun build --compile ./bin/cli.ts --outfile eos-evm-miner
-      - run: chmod +x eos-evm-miner
       - uses: softprops/action-gh-release@v1
         with:
           files: |
