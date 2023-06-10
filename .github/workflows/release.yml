@@ -8,7 +8,10 @@ permissions:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        platform: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.platform }}
     steps:
       - uses: actions/checkout@v3
       - uses: oven-sh/setup-bun@v1
@@ -16,8 +19,8 @@ jobs:
           bun-version: latest
       - run: bun install
       - run: bun test
-      - run: bun build --compile ./bin/cli.ts --outfile eos-evm-miner
+      - run: bun build --compile ./bin/cli.ts --outfile eos-evm-miner-${{ matrix.platform }}
       - uses: softprops/action-gh-release@v1
         with:
           files: |
-            eos-evm-miner
+            eos-evm-miner-*
