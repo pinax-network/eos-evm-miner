@@ -8,9 +8,9 @@
 
 ## [`Bun` Binary Releases](https://github.com/pinax-network/eos-evm-miner/releases)
 
-- Linux
-- MacOS
-- Windows
+- [x] Ubuntu
+- [ ] ~~MacOS~~
+- [ ] ~~Windows~~
 
 ## Quickstart
 
