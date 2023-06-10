@@ -8,9 +8,28 @@
 
 ## [`Bun` Binary Releases](https://github.com/pinax-network/eos-evm-miner/releases)
 
+```
+$ wget https://github.com/pinax-network/eos-evm-miner/releases/download/v0.3.1/eos-evm-miner
+$ chmod +x ./eos-evm-miner
+```
+
 - [x] Ubuntu
 - [ ] ~~MacOS~~
 - [ ] ~~Windows~~
+
+## Build from source
+
+**Install Bun**
+```
+curl -fsSL https://bun.sh/install | bash
+```
+
+**Generate a standalone Bun executable**
+```
+$ git clone https://github.com/pinax-network/eos-evm-miner.git
+$ cd eos-evm-miner
+$ bun build --compile ./bin/cli.ts --outfile eos-evm-miner
+```
 
 ## Quickstart
 
@@ -101,15 +120,6 @@ METRICS_DISABLED=false
 VERBOSE=true
 ```
 
-## Build from source
-
-```
-$ bun build --compile ./bin/cli.ts --outfile eos-evm-miner
-[0.03ms] ".env"
-  [31ms]  bundle  304 modules
- [101ms] compile  eos-evm-miner
-```
-
 ## Testing
 
 ```bash
@@ -136,7 +146,8 @@ src/eth_gasPrice.spec.ts:
   - [x] `powerup` - powerup miner CPU & NET
 - [x] `Bun` binary builds
 - [x] Docker Container
-  - [ ] "Distroless" Docker image
+  - [ ] ~~Alpine Docker image~~
+  - [ ] ~~"Distroless" Docker image~~
 - [x] Prometheus metrics
   - [x] total `eth_gasPrice` requests & success
   - [x] total `eth_sendRawTransaction` requests & success
