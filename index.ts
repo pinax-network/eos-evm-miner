@@ -1,11 +1,12 @@
 import { JSONRPCServer } from "json-rpc-2.0";
 import { Session } from "@wharfkit/session";
-import { DEFAULT_HOSTNAME, DEFAULT_PORT, HOSTNAME, LOCK_GAS_PRICE, PORT,PROMETHEUS_PORT, DEFAULT_PROMETHEUS_PORT, createSession, METRICS_DISABLED, DEFAULT_METRICS_DISABLED, DEFAULT_VERBOSE, VERBOSE, LOCK_CHAIN_ID } from "./src/config.js";
+import { DEFAULT_HOSTNAME, DEFAULT_PORT, HOSTNAME, LOCK_GAS_PRICE, PORT,PROMETHEUS_PORT, DEFAULT_PROMETHEUS_PORT, createSession, METRICS_DISABLED, DEFAULT_METRICS_DISABLED, DEFAULT_VERBOSE, VERBOSE, LOCK_CHAIN_ID, LOCK_GENESIS_TIME } from "./src/config.js";
 import { logger } from "./src/logger.js";
 import { DefaultOptions } from "./bin/cli.js";
 import { eth_sendRawTransaction } from "./src/eth_sendRawTransaction.js";
 import { eth_gasPrice } from "./src/eth_gasPrice.js";
 import { eth_chainId } from "./src/eth_chainId.js";
+import { eth_blockNumber } from "./src/eth_blockNumber.js";
 import * as prometheus from "./src/prometheus.js"
 
 export interface StartOptions extends DefaultOptions {
@@ -13,9 +14,10 @@ export interface StartOptions extends DefaultOptions {
     metricsListenPort?: number;
     hostname?: string;
     verbose?: boolean;
+    metricsDisabled?: boolean;
     lockGasPrice?: string;
     lockChainId?: string;
-    metricsDisabled?: boolean;
+    lockGenesisTime?: string;
 }
 
 export default function (options: StartOptions) {
@@ -25,6 +27,7 @@ export default function (options: StartOptions) {
     const metricsListenPort = options.metricsListenPort ?? PROMETHEUS_PORT ?? DEFAULT_PROMETHEUS_PORT;
     const lockGasPrice = options.lockGasPrice ?? LOCK_GAS_PRICE;
     const lockChainId = options.lockChainId ?? LOCK_CHAIN_ID;
+    const lockGenesisTime = options.lockGenesisTime ?? LOCK_GENESIS_TIME;
     const verbose = options.verbose ?? VERBOSE ?? DEFAULT_VERBOSE;
 
     // create Wharfkit session
@@ -54,6 +57,13 @@ export default function (options: StartOptions) {
         prometheus.chainId.requests?.inc();
         const result = eth_chainId(session, lockChainId)
         prometheus.chainId.success?.inc();
+        return result;
+    });
+    server.addMethod("eth_blockNumber", async () => {
+        logger.info("eth_blockNumber");
+        prometheus.blockNumber.requests?.inc();
+        const result = eth_blockNumber(session, lockGenesisTime)
+        prometheus.blockNumber.success?.inc();
         return result;
     });
 

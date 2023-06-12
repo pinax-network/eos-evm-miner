@@ -33,6 +33,10 @@ export const chainId = {
     requests: registerCounter("eth_chain_id_requests", "The number of eth_chainId errors from request received"),
     success: registerCounter("eth_chain_id_success", "The number of eth_chainId successful request received"),
 }
+export const blockNumber = {
+    requests: registerCounter("eth_block_number_requests", "The number of eth_blockNumber errors from request received"),
+    success: registerCounter("eth_block_number_success", "The number of eth_blockNumber successful request received"),
+}
 
 export async function listen(port: number, hostname?: string) {
     return new Promise(resolve => {
