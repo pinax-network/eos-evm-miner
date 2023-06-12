@@ -2,7 +2,7 @@
 
 import { Command } from "commander";
 import pkg from "../package.json" assert { type: "json" };
-import { DEFAULT_HOSTNAME, DEFAULT_LOCK_GAS_PRICE, DEFAULT_METRICS_DISABLED, DEFAULT_MINER_PERMISSION, DEFAULT_PORT, DEFAULT_PROMETHEUS_PORT } from "../src/config.js";
+import { DEFAULT_HOSTNAME, DEFAULT_LOCK_CHAIN_ID, DEFAULT_LOCK_GAS_PRICE, DEFAULT_MINER_PERMISSION, DEFAULT_PORT, DEFAULT_PROMETHEUS_PORT } from "../src/config.js";
 import { claim } from "./claim.js";
 import { open } from "./open.js";
 import { powerup } from "./powerup.js";
@@ -22,6 +22,7 @@ defaultOptions(program.command("start"))
     .option('--metrics-disabled', 'If set, will not send metrics to Prometheus')
     .option('--verbose', 'Enable verbose logging')
     .option('--lock-gas-price', `Lock gas price as hex value (ex: "${DEFAULT_LOCK_GAS_PRICE}")`)
+    .option('--lock-chain-id', `Lock chain ID as hex value (ex: "${DEFAULT_LOCK_CHAIN_ID}")`)
     .action(options => {
         start(options);
     });

@@ -29,6 +29,10 @@ export const sendRawTransaction = {
     requests: registerCounter("eth_send_raw_transaction_requests", "The number of eth_sendRawTransaction errors from request received"),
     success: registerCounter("eth_send_raw_transaction_success", "The number of eth_sendRawTransaction successful request received"),
 }
+export const chainId = {
+    requests: registerCounter("eth_chain_id_requests", "The number of eth_chainId errors from request received"),
+    success: registerCounter("eth_chain_id_success", "The number of eth_chainId successful request received"),
+}
 
 export async function listen(port: number, hostname?: string) {
     return new Promise(resolve => {

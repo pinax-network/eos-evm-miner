@@ -1,10 +1,11 @@
 import { JSONRPCServer } from "json-rpc-2.0";
 import { Session } from "@wharfkit/session";
-import { DEFAULT_HOSTNAME, DEFAULT_PORT, HOSTNAME, LOCK_GAS_PRICE, PORT,PROMETHEUS_PORT, DEFAULT_PROMETHEUS_PORT, createSession, METRICS_DISABLED, DEFAULT_METRICS_DISABLED, DEFAULT_VERBOSE, VERBOSE } from "./src/config.js";
+import { DEFAULT_HOSTNAME, DEFAULT_PORT, HOSTNAME, LOCK_GAS_PRICE, PORT,PROMETHEUS_PORT, DEFAULT_PROMETHEUS_PORT, createSession, METRICS_DISABLED, DEFAULT_METRICS_DISABLED, DEFAULT_VERBOSE, VERBOSE, LOCK_CHAIN_ID } from "./src/config.js";
 import { logger } from "./src/logger.js";
 import { DefaultOptions } from "./bin/cli.js";
 import { eth_sendRawTransaction } from "./src/eth_sendRawTransaction.js";
 import { eth_gasPrice } from "./src/eth_gasPrice.js";
+import { eth_chainId } from "./src/eth_chainId.js";
 import * as prometheus from "./src/prometheus.js"
 
 export interface StartOptions extends DefaultOptions {
@@ -13,6 +14,7 @@ export interface StartOptions extends DefaultOptions {
     hostname?: string;
     verbose?: boolean;
     lockGasPrice?: string;
+    lockChainId?: string;
     metricsDisabled?: boolean;
 }
 
@@ -22,6 +24,7 @@ export default function (options: StartOptions) {
     const metricsDisabled = options.metricsDisabled ?? METRICS_DISABLED ?? DEFAULT_METRICS_DISABLED;
     const metricsListenPort = options.metricsListenPort ?? PROMETHEUS_PORT ?? DEFAULT_PROMETHEUS_PORT;
     const lockGasPrice = options.lockGasPrice ?? LOCK_GAS_PRICE;
+    const lockChainId = options.lockChainId ?? LOCK_CHAIN_ID;
     const verbose = options.verbose ?? VERBOSE ?? DEFAULT_VERBOSE;
 
     // create Wharfkit session
@@ -46,6 +49,13 @@ export default function (options: StartOptions) {
         prometheus.gasPrice.success?.inc();
         return result;
     });
+    server.addMethod("eth_chainId", async () => {
+        logger.info("eth_chainId");
+        prometheus.chainId.requests?.inc();
+        const result = eth_chainId(session, lockChainId)
+        prometheus.chainId.success?.inc();
+        return result;
+    });
 
     if ( !options.metricsDisabled ) {
         prometheus.listen(metricsListenPort, hostname);
@@ -57,12 +67,14 @@ export default function (options: StartOptions) {
         development: true,
         fetch: async (request: Request) => {
             const url = new URL(request.url);
+            // console.log(url);
             if ( request.method == "GET" ) {
                 if ( url.pathname == "/" ) return new Response(banner(session, port, hostname, metricsListenPort, metricsDisabled));
                 const info = await session.client.v1.chain.get_info();
                 return toJSON(info.toJSON());
             }
             const jsonRPCRequest = await request.json<any>();
+            console.log(jsonRPCRequest)
             if ( !jsonRPCRequest ) return new Response("invalid request", {status: 400})
             // server.receive takes a JSON-RPC request and returns a promise of a JSON-RPC response.
             // It can also receive an array of requests, in which case it may return an array of responses.
