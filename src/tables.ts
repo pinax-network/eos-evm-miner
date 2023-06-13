@@ -1,4 +1,4 @@
-import { Name, Session } from "@wharfkit/session";
+import { Name, Session, UInt64 } from "@wharfkit/session";
 import { logger } from "./logger.js";
 
 export interface Config {
@@ -48,7 +48,7 @@ export interface Account {
     eth_address: string;
     nonce: number;
     balance: string;
-    code_id: number;
+    code_id?: number;
 }
 
 export async function account(session: Session, eth_address: string) {
@@ -69,4 +69,27 @@ export async function account(session: Session, eth_address: string) {
         return null;
     }
     return results.rows[0] as Account;
+}
+
+export interface AccountCode {
+    id: number;
+    ref_count: number;
+    code: string;
+}
+
+export async function accountcode(session: Session, id: number) {
+    const results = await session.client.v1.chain.get_table_rows({
+        code: "eosio.evm",
+        scope: "eosio.evm",
+        table: "accountcode",
+        lower_bound: UInt64.from(id),
+        upper_bound: UInt64.from(id),
+        json: true,
+        limit: 1,
+    });
+    if ( results?.rows?.length === 0 ) {
+        logger.error(`accountcode.id ${id} not found`);
+        return null;
+    }
+    return results.rows[0] as AccountCode;
 }

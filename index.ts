@@ -10,6 +10,7 @@ import { eth_blockNumber } from "./src/eth_blockNumber.js";
 import * as prometheus from "./src/prometheus.js"
 import { eth_getBalance } from "./src/eth_getBalance.js";
 import { net_version } from "./src/net_version.js";
+import { eth_getCode } from "./src/eth_getCode.js";
 
 export interface StartOptions extends DefaultOptions {
     port?: number;
@@ -59,12 +60,12 @@ export default function (options: StartOptions) {
         console.log(banner(session, port, hostname, metricsListenPort, metricsDisabled));
     }
 
-    // server.addMethod("eth_sendRawTransaction", async params => {
-    //     prometheus.sendRawTransaction.requests?.inc();
-    //     const result = await eth_sendRawTransaction(session, params)
-    //     prometheus.sendRawTransaction.success?.inc();
-    //     return result;
-    // });
+    server.addMethod("eth_sendRawTransaction", async params => {
+        prometheus.sendRawTransaction.requests?.inc();
+        const result = await eth_sendRawTransaction(session, params)
+        prometheus.sendRawTransaction.success?.inc();
+        return result;
+    });
     server.addMethod("eth_gasPrice", async () => {
         prometheus.gasPrice.requests?.inc();
         const result = await eth_gasPrice(session, lockGasPrice)
@@ -99,14 +100,19 @@ export default function (options: StartOptions) {
         prometheus.net_version.success?.inc();
         return result;
     });
+    server.addMethod("eth_getCode", async params => {
+        logger.info("eth_getCode");
+        prometheus.blockNumber.requests?.inc();
+        const result = await eth_getCode(session, params)
+        prometheus.blockNumber.success?.inc();
+        return result;
+    });
     // Proxied - Move to internal
-    server.addMethod("eth_getCode", params => client.request("eth_getCode", params));
     server.addMethod("eth_estimateGas", params => client.request("eth_estimateGas", params));
 
     // Proxied Requests
     server.addMethod("eth_getBlockByNumber", params => client.request("eth_getBlockByNumber", params));
     server.addMethod("eth_getTransactionCount", params => client.request("eth_getTransactionCount", params));
-    server.addMethod("eth_sendRawTransaction", params => client.request("eth_sendRawTransaction", params));
     server.addMethod("eth_getTransactionReceipt", params => client.request("eth_getTransactionReceipt", params));
     server.addMethod("eth_getBlockByHash", params => client.request("eth_getBlockByHash", params));
 
@@ -120,7 +126,6 @@ export default function (options: StartOptions) {
         development: true,
         fetch: async (request: Request) => {
             const url = new URL(request.url);
-            // console.log(url);
             if ( request.method == "GET" ) {
                 if ( url.pathname == "/" ) return new Response(banner(session, port, hostname, metricsListenPort, metricsDisabled));
                 const info = await session.client.v1.chain.get_info();
