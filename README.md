@@ -141,15 +141,16 @@ src/eth_gasPrice.spec.ts:
 ## Features
 
 - [x] JSON RPC methods (Request to EOS RPC)
-  - [x] `eth_gasPrice` - get dynamic or static gas price
-  - [x] `eth_sendRawTransaction` - send raw transaction to Nodeos RPC
-  - [x] `eth_chainId` - get chain ID
-  - [x] `eth_blockNumber` - get latest block number
-  - [x] `eth_getBalance` - get miner balance
-  - [x] `net_version` - The string value of current network id.
-  - [ ] `eth_estimateGas` - estimate gas for transaction
+  - [x] `eth_gasPrice` - Returns the current gas price on the network in wei.
+  - [x] `eth_sendRawTransaction` - Creates new message call transaction or a contract creation for signed transactions.
+  - [x] `eth_chainId` - Returns the current network/chain ID, used to sign replay-protected transaction introduced in EIP-155.
+  - [x] `eth_blockNumber` - Returns the latest block number of the blockchain.
+  - [x] `eth_getBalance` - Returns the balance of given account address in wei.
+  - [x] `net_version` - Returns the current network id.
+  - [ ] `eth_estimateGas` - Returns an estimation of gas for a given transaction.
+  - [ ] `eth_getCode` - Returns the compiled bytecode of a smart contract.
 - [x] JSON RPC methods (Proxy to EVM RPC)
-  - [x] `eth_getBlockByNumber` - get block by number
+  - [x] `eth_getBlockByNumber` - Returns information of the block matching the given block number.
 
 - [x] CLI commands
   - [x] `start` - start miner JSON RPC server
