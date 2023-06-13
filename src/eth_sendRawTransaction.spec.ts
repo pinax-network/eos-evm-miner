@@ -19,7 +19,7 @@ const rplxs = [
 test('eth_sendRawTransaction', async () => {
     for ( const [rlptx, expected] of rplxs ) {
         const params = [ rlptx, "latest" ];
-        const trx_id = await eth_sendRawTransaction(session, params, false);
-        assert.equal(trx_id, expected);
+        const result = await eth_sendRawTransaction(session, params, false);
+        assert.equal(result, expected);
     }
 });

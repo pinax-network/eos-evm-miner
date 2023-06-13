@@ -11,6 +11,6 @@ const session = createSession({
 });
 
 test('eth_blockNumber', async () => {
-    const blockNumber = await eth_blockNumber(session)
-    assert.equal(blockNumber.length > 0, true);
+    const result = await eth_blockNumber(session)
+    assert.equal(result.length > 0, true);
 });

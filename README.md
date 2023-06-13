@@ -146,6 +146,8 @@ src/eth_gasPrice.spec.ts:
   - [x] `eth_chainId` - get chain ID
   - [x] `eth_blockNumber` - get latest block number
   - [x] `eth_getBalance` - get miner balance
+  - [x] `net_version` - The string value of current network id.
+  - [ ] `eth_estimateGas` - estimate gas for transaction
 - [x] JSON RPC methods (Proxy to EVM RPC)
   - [x] `eth_getBlockByNumber` - get block by number
 

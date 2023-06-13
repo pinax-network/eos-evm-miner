@@ -9,6 +9,7 @@ import { eth_chainId } from "./src/eth_chainId.js";
 import { eth_blockNumber } from "./src/eth_blockNumber.js";
 import * as prometheus from "./src/prometheus.js"
 import { eth_getBalance } from "./src/eth_getBalance.js";
+import { net_version } from "./src/net_version.js";
 
 export interface StartOptions extends DefaultOptions {
     port?: number;
@@ -91,6 +92,14 @@ export default function (options: StartOptions) {
         prometheus.blockNumber.success?.inc();
         return result;
     });
+    server.addMethod("net_version", async () => {
+        logger.info("net_version");
+        prometheus.net_version.requests?.inc();
+        const result = await net_version(session, lockChainId)
+        prometheus.net_version.success?.inc();
+        return result;
+    });
+
     // Proxied Requests
     server.addMethod("eth_getBlockByNumber", async params => {
         if ( !rpcEvmEndpoint) throw new Error("rpcEvmEndpoint is required");

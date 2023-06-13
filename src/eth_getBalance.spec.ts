@@ -11,6 +11,6 @@ const session = createSession({
 });
 
 test('eth_getBalance', async () => {
-    const getBalance = await eth_getBalance(session, ["88e529a16d89cab7d694a28a10e65c2947548055", "latest"])
-    assert.equal(getBalance.length > 0, true);
+    const result = await eth_getBalance(session, ["88e529a16d89cab7d694a28a10e65c2947548055", "latest"])
+    assert.equal(result.length > 0, true);
 });

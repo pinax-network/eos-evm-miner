@@ -11,6 +11,6 @@ const session = createSession({
 })
 
 test('eth_gasPrice', async () => {
-    const gasPrice = await eth_gasPrice(session)
-    assert.equal(gasPrice, '0x22ecb25c00');
+    const result = await eth_gasPrice(session)
+    assert.equal(result, '0x22ecb25c00');
 });
