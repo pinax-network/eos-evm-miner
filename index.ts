@@ -1,3 +1,4 @@
+import pkg from "./package.json" assert { type: "json" };
 import { JSONRPCServer } from "json-rpc-2.0";
 import { Session } from "@wharfkit/session";
 import { DEFAULT_HOSTNAME, HOSTNAME, LOCK_GAS_PRICE, PORT,PROMETHEUS_PORT, METRICS_DISABLED, VERBOSE, LOCK_CHAIN_ID, LOCK_GENESIS_TIME, RPC_EVM_ENDPOINT } from "./src/config.js";
@@ -153,7 +154,7 @@ function banner( session: Session, port: number, hostname?: string, metricsListe
         ███████╗╚██████╔╝███████║    ███████╗ ╚████╔╝ ██║ ╚═╝ ██║
         ╚══════╝ ╚═════╝ ╚══════╝    ╚══════╝  ╚═══╝  ╚═╝     ╚═╝
 `
-    text += `                EOS EVM Miner listening @ ${hostname ?? DEFAULT_HOSTNAME}:${port.toString()}\n`
+    text += `            EOS EVM Miner v${pkg.version} listening @ ${hostname ?? DEFAULT_HOSTNAME}:${port.toString()}\n`
     text += `                 Nodeos @ ${session.chain.url.toString()}\n`
     if ( !metricsDisabled ) text += `              Prometheus metrics listening @ ${hostname ?? DEFAULT_HOSTNAME}:${metricsListenPort?.toString()}\n`;
     text += `                   Your miner account is ${session.actor.toString()}\n`;
