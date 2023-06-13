@@ -1,8 +1,8 @@
 import assert from "node:assert";
 import { eth_blockNumber } from "./eth_blockNumber.js"
 import { PrivateKey } from "@wharfkit/session";
-import { createSession } from "./config.js";
 import { test } from "bun:test";
+import { createSession } from "./createSession.js";
 
 // start the miner
 const session = createSession({

@@ -1,16 +1,18 @@
-import { JSONRPCClient, JSONRPCResponse, JSONRPCServer } from "json-rpc-2.0";
+import { JSONRPCServer } from "json-rpc-2.0";
 import { Session } from "@wharfkit/session";
-import { DEFAULT_HOSTNAME, HOSTNAME, LOCK_GAS_PRICE, PORT,PROMETHEUS_PORT, createSession, METRICS_DISABLED, VERBOSE, LOCK_CHAIN_ID, LOCK_GENESIS_TIME, RPC_EVM_ENDPOINT, RPC_ENDPOINT } from "./src/config.js";
+import { DEFAULT_HOSTNAME, HOSTNAME, LOCK_GAS_PRICE, PORT,PROMETHEUS_PORT, METRICS_DISABLED, VERBOSE, LOCK_CHAIN_ID, LOCK_GENESIS_TIME, RPC_EVM_ENDPOINT } from "./src/config.js";
 import { logger } from "./src/logger.js";
 import { DefaultOptions } from "./bin/cli.js";
+import * as prometheus from "./src/prometheus.js"
 import { eth_sendRawTransaction } from "./src/eth_sendRawTransaction.js";
 import { eth_gasPrice } from "./src/eth_gasPrice.js";
 import { eth_chainId } from "./src/eth_chainId.js";
 import { eth_blockNumber } from "./src/eth_blockNumber.js";
-import * as prometheus from "./src/prometheus.js"
 import { eth_getBalance } from "./src/eth_getBalance.js";
 import { net_version } from "./src/net_version.js";
 import { eth_getCode } from "./src/eth_getCode.js";
+import { createSession } from "./src/createSession.js";
+import { createClient } from "./src/createClient.js";
 
 export interface StartOptions extends DefaultOptions {
     port?: number;
@@ -35,24 +37,13 @@ export default function (options: StartOptions) {
     const lockGenesisTime = options.lockGenesisTime ?? LOCK_GENESIS_TIME;
     const verbose = options.verbose ?? VERBOSE;
     const rpcEvmEndpoint = options.rpcEvmEndpoint ?? RPC_EVM_ENDPOINT;
-    const rpcEndpoint = options.rpcEndpoint ?? RPC_ENDPOINT;
 
     // create Wharfkit session
     const session = createSession(options);
 
     // JSON RPC server & client
     const server = new JSONRPCServer();
-    const client: JSONRPCClient<void> = new JSONRPCClient(async jsonRPCRequest => {
-        const response = await fetch(rpcEvmEndpoint, {
-            method: "POST",
-            headers: { "content-type": "application/json"},
-            body: JSON.stringify(jsonRPCRequest),
-        });
-        if ( jsonRPCRequest.id !== undefined ) new Error(response.statusText);
-        if ( response.status !== 200) new Error(response.statusText);
-        const jsonRPCResponse: JSONRPCResponse = await response.json();
-        return client.receive(jsonRPCResponse);
-    });
+    const client = createClient(rpcEvmEndpoint);
 
     // enable logging if verbose enabled
     if (verbose) {
@@ -61,36 +52,36 @@ export default function (options: StartOptions) {
     }
 
     server.addMethod("eth_sendRawTransaction", async params => {
-        prometheus.sendRawTransaction.requests?.inc();
+        prometheus.eth_sendRawTransaction.requests?.inc();
         const result = await eth_sendRawTransaction(session, params)
-        prometheus.sendRawTransaction.success?.inc();
+        prometheus.eth_sendRawTransaction.success?.inc();
         return result;
     });
     server.addMethod("eth_gasPrice", async () => {
-        prometheus.gasPrice.requests?.inc();
+        prometheus.eth_gasPrice.requests?.inc();
         const result = await eth_gasPrice(session, lockGasPrice)
-        prometheus.gasPrice.success?.inc();
+        prometheus.eth_gasPrice.success?.inc();
         return result;
     });
     server.addMethod("eth_chainId", async () => {
         logger.info("eth_chainId");
-        prometheus.chainId.requests?.inc();
+        prometheus.eth_chainId.requests?.inc();
         const result = await eth_chainId(session, lockChainId)
-        prometheus.chainId.success?.inc();
+        prometheus.eth_chainId.success?.inc();
         return result;
     });
     server.addMethod("eth_blockNumber", async () => {
         logger.info("eth_blockNumber");
-        prometheus.blockNumber.requests?.inc();
+        prometheus.eth_blockNumber.requests?.inc();
         const result = await eth_blockNumber(session, lockGenesisTime)
-        prometheus.blockNumber.success?.inc();
+        prometheus.eth_blockNumber.success?.inc();
         return result;
     });
     server.addMethod("eth_getBalance", async params => {
         logger.info("eth_getBalance");
-        prometheus.blockNumber.requests?.inc();
+        prometheus.eth_getBalance.requests?.inc();
         const result = await eth_getBalance(session, params)
-        prometheus.blockNumber.success?.inc();
+        prometheus.eth_getBalance.success?.inc();
         return result;
     });
     server.addMethod("net_version", async () => {
@@ -102,9 +93,9 @@ export default function (options: StartOptions) {
     });
     server.addMethod("eth_getCode", async params => {
         logger.info("eth_getCode");
-        prometheus.blockNumber.requests?.inc();
+        prometheus.eth_getCode.requests?.inc();
         const result = await eth_getCode(session, params)
-        prometheus.blockNumber.success?.inc();
+        prometheus.eth_getCode.success?.inc();
         return result;
     });
     // Proxied - Move to internal

@@ -62,6 +62,6 @@ export interface DefaultOptions {
 function defaultOptions(command: Command) {
     return command
         .option('--private-key <string>', 'Miner private key (ex: "PVT_K1_...")')
-        .option('--account <string>', 'Miner account name (ex: "miner.evm")')
-        .option('--permission <string>', 'Miner permission', DEFAULT_MINER_PERMISSION)
+        .option('--actor <string>', 'Miner account name (ex: "miner.enf")')
+        .option(`--permission <string>', 'Miner permission (ex: ${DEFAULT_MINER_PERMISSION})`)
 }

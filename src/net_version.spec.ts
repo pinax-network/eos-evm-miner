@@ -1,8 +1,8 @@
 import assert from "node:assert";
 import { net_version } from "./net_version.js"
 import { PrivateKey } from "@wharfkit/session";
-import { createSession } from "./config.js";
 import { test } from "bun:test";
+import { createSession } from "./createSession.js";
 
 // start the miner
 const session = createSession({

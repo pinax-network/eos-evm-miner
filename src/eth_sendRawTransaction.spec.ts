@@ -2,7 +2,7 @@ import { test } from "bun:test";
 import assert from "node:assert";
 import { eth_sendRawTransaction } from "./eth_sendRawTransaction.js"
 import { PrivateKey } from "@wharfkit/session";
-import { createSession } from "./config.js";
+import { createSession } from "./createSession.js";
 
 // start the miner
 const session = createSession({

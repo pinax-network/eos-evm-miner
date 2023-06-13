@@ -1,5 +1,6 @@
-import { createSession, explorer } from "../src/config.js";
 import * as actions from "../src/actions.js";
+import { createSession } from "../src/createSession.js";
+import { getExplorer } from "../src/getExplorer.js";
 import { type DefaultOptions } from "./cli.js"
 
 export interface PowerupOptions extends DefaultOptions {
@@ -16,5 +17,5 @@ export async function powerup(net_frac: string, cpu_frac: string, max_payment: s
     const action = actions.powerup(session, net_frac, cpu_frac, max_payment);
     const response = await session.transact({action})
     const trx_id = response.response?.transaction_id;
-    console.log(`${session.actor.toString()} powerup success ${explorer(session, trx_id)}`);
+    console.log(`${session.actor.toString()} powerup success ${getExplorer(session, trx_id)}`);
 }

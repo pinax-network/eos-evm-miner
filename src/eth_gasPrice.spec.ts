@@ -1,8 +1,8 @@
 import assert from "node:assert";
 import { eth_gasPrice } from "./eth_gasPrice.js"
 import { PrivateKey } from "@wharfkit/session";
-import { createSession } from "./config.js";
 import { test } from "bun:test";
+import { createSession } from "./createSession.js";
 
 // start the miner
 const session = createSession({
