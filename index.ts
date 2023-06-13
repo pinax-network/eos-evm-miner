@@ -8,6 +8,7 @@ import { eth_gasPrice } from "./src/eth_gasPrice.js";
 import { eth_chainId } from "./src/eth_chainId.js";
 import { eth_blockNumber } from "./src/eth_blockNumber.js";
 import * as prometheus from "./src/prometheus.js"
+import { eth_getBalance } from "./src/eth_getBalance.js";
 
 export interface StartOptions extends DefaultOptions {
     port?: number;
@@ -48,21 +49,28 @@ export default function (options: StartOptions) {
     });
     server.addMethod("eth_gasPrice", async () => {
         prometheus.gasPrice.requests?.inc();
-        const result = eth_gasPrice(session, lockGasPrice)
+        const result = await eth_gasPrice(session, lockGasPrice)
         prometheus.gasPrice.success?.inc();
         return result;
     });
     server.addMethod("eth_chainId", async () => {
         logger.info("eth_chainId");
         prometheus.chainId.requests?.inc();
-        const result = eth_chainId(session, lockChainId)
+        const result = await eth_chainId(session, lockChainId)
         prometheus.chainId.success?.inc();
         return result;
     });
     server.addMethod("eth_blockNumber", async () => {
         logger.info("eth_blockNumber");
         prometheus.blockNumber.requests?.inc();
-        const result = eth_blockNumber(session, lockGenesisTime)
+        const result = await eth_blockNumber(session, lockGenesisTime)
+        prometheus.blockNumber.success?.inc();
+        return result;
+    });
+    server.addMethod("eth_getBalance", async params => {
+        logger.info("eth_getBalance");
+        prometheus.blockNumber.requests?.inc();
+        const result = await eth_getBalance(session, params)
         prometheus.blockNumber.success?.inc();
         return result;
     });
@@ -115,6 +123,7 @@ function banner( session: Session, port: number, hostname?: string, metricsListe
         ╚══════╝ ╚═════╝ ╚══════╝    ╚══════╝  ╚═══╝  ╚═╝     ╚═╝
 `
     text += `                EOS EVM Miner listening @ ${hostname ?? DEFAULT_HOSTNAME}:${port.toString()}\n`
+    text += `                 Nodeos @ ${session.chain.url.toString()}\n`
     if ( !metricsDisabled ) text += `              Prometheus metrics listening @ ${hostname ?? DEFAULT_HOSTNAME}:${metricsListenPort?.toString()}\n`;
     text += `                   Your miner account is ${session.actor.toString()}\n`;
     text += `        ${session.walletPlugin.metadata.publicKey}\n`

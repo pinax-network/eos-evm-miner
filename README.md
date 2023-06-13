@@ -143,7 +143,7 @@ src/eth_gasPrice.spec.ts:
   - [x] `eth_chainId` - get chain ID
   - [x] `eth_blockNumber` - get latest block number
   - [ ] `eth_getBlockByNumber` - get block by number
-  - [ ] `eth_getBalance` - get miner balance
+  - [x] `eth_getBalance` - get miner balance
 - [x] CLI commands
   - [x] `start` - start miner JSON RPC server
   - [x] `claim` - claim miner rewards

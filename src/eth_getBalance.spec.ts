@@ -1,5 +1,5 @@
 import assert from "node:assert";
-import { eth_blockNumber } from "./eth_blockNumber.js"
+import { eth_getBalance } from "./eth_getBalance.js"
 import { PrivateKey } from "@wharfkit/session";
 import { createSession } from "./config.js";
 import { test } from "bun:test";
@@ -10,7 +10,7 @@ const session = createSession({
     privateKey: PrivateKey.generate("K1").toString(),
 });
 
-test('eth_blockNumber', async () => {
-    const blockNumber = await eth_blockNumber(session)
-    assert.equal(blockNumber.length > 0, true);
+test('eth_getBalance', async () => {
+    const getBalance = await eth_getBalance(session, ["88e529a16d89cab7d694a28a10e65c2947548055", "latest"])
+    assert.equal(getBalance.length > 0, true);
 });
