@@ -43,6 +43,11 @@ export const getBlockByNumber = {
     success: registerCounter("eth_get_block_by_number_success", "The number of eth_getBlockByNumber successful request received"),
 }
 
+export const eth_estimateGas = {
+    requests: registerCounter("eth_estimate_gas_requests", "The number of eth_eth_estimateGas errors from request received"),
+    success: registerCounter("eth_estimate_gas_success", "The number of eth_eth_estimateGas successful request received"),
+}
+
 export const net_version = {
     requests: registerCounter("net_version_requests", "The number of net_version errors from request received"),
     success: registerCounter("net_version_success", "The number of net_version successful request received"),

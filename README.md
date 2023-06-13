@@ -147,9 +147,12 @@ src/eth_gasPrice.spec.ts:
   - [x] `eth_blockNumber` - Returns the latest block number of the blockchain.
   - [x] `eth_getBalance` - Returns the balance of given account address in wei.
   - [x] `net_version` - Returns the current network id.
-  - [ ] `eth_estimateGas` - Returns an estimation of gas for a given transaction.
-  - [ ] `eth_getCode` - Returns the compiled bytecode of a smart contract.
 - [x] JSON RPC methods (Proxy to EVM RPC)
+  - [x] `eth_estimateGas` - Returns an estimation of gas for a given transaction.
+  - [x] `eth_getCode` - Returns the compiled bytecode of a smart contract.
+  - [x] `eth_getTransactionCount` - Returns the number of transactions sent from an address.
+  - [x] `eth_getTransactionReceipt` - Returns the receipt of a transaction by transaction hash.
+  - [x] `eth_getBlockByHash` - Returns information of the block matching the given block hash.
   - [x] `eth_getBlockByNumber` - Returns information of the block matching the given block number.
 
 - [x] CLI commands

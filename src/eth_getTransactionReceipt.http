@@ -1,0 +1,5 @@
+# POST http://localhost:50305 HTTP/1.1
+POST https://api.evm.eosnetwork.com HTTP/1.1
+content-type: application/json
+
+{"method":"eth_estimateGas","params":["0x8135aae75b777eb76edf69c20dfcc4ad163d03a5b1b281f56389c32bb8b1181e"],"id":1,"jsonrpc":"2.0"}

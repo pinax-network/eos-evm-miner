@@ -59,12 +59,12 @@ export default function (options: StartOptions) {
         console.log(banner(session, port, hostname, metricsListenPort, metricsDisabled));
     }
 
-    server.addMethod("eth_sendRawTransaction", async params => {
-        prometheus.sendRawTransaction.requests?.inc();
-        const result = await eth_sendRawTransaction(session, params)
-        prometheus.sendRawTransaction.success?.inc();
-        return result;
-    });
+    // server.addMethod("eth_sendRawTransaction", async params => {
+    //     prometheus.sendRawTransaction.requests?.inc();
+    //     const result = await eth_sendRawTransaction(session, params)
+    //     prometheus.sendRawTransaction.success?.inc();
+    //     return result;
+    // });
     server.addMethod("eth_gasPrice", async () => {
         prometheus.gasPrice.requests?.inc();
         const result = await eth_gasPrice(session, lockGasPrice)
@@ -99,16 +99,16 @@ export default function (options: StartOptions) {
         prometheus.net_version.success?.inc();
         return result;
     });
+    // Proxied - Move to internal
+    server.addMethod("eth_getCode", params => client.request("eth_getCode", params));
+    server.addMethod("eth_estimateGas", params => client.request("eth_estimateGas", params));
 
     // Proxied Requests
-    server.addMethod("eth_getBlockByNumber", async params => {
-        if ( !rpcEvmEndpoint) throw new Error("rpcEvmEndpoint is required");
-        logger.info("eth_getBlockByNumber");
-        prometheus.getBlockByNumber.requests?.inc();
-        const result = await client.request("eth_getBlockByNumber", params);
-        prometheus.getBlockByNumber.success?.inc();
-        return result;
-    });
+    server.addMethod("eth_getBlockByNumber", params => client.request("eth_getBlockByNumber", params));
+    server.addMethod("eth_getTransactionCount", params => client.request("eth_getTransactionCount", params));
+    server.addMethod("eth_sendRawTransaction", params => client.request("eth_sendRawTransaction", params));
+    server.addMethod("eth_getTransactionReceipt", params => client.request("eth_getTransactionReceipt", params));
+    server.addMethod("eth_getBlockByHash", params => client.request("eth_getBlockByHash", params));
 
     if ( !options.metricsDisabled ) {
         prometheus.listen(metricsListenPort, hostname);
