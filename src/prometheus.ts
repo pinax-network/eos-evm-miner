@@ -38,6 +38,11 @@ export const blockNumber = {
     success: registerCounter("eth_block_number_success", "The number of eth_blockNumber successful request received"),
 }
 
+export const getBlockByNumber = {
+    requests: registerCounter("eth_get_block_by_number_requests", "The number of eth_getBlockByNumber errors from request received"),
+    success: registerCounter("eth_get_block_by_number_success", "The number of eth_getBlockByNumber successful request received"),
+}
+
 export async function listen(port: number, hostname?: string) {
     return new Promise(resolve => {
         server.listen(port, hostname, () => {

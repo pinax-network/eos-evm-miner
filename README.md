@@ -103,9 +103,12 @@ MINER_ACCOUNT=miner.enf
 # miner (optional)
 MINER_PERMISSION=active
 
-# Nodeos (optional)
-RPC_ENDPOINT=https://eos.greymass.com
+# EOS RPC (optional)
+RPC_ENDPOINT=https://eos.api.eosnation.io
 CHAIN_ID=aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906
+
+# EVM RPC (optional)
+EVM_RPC_ENDPOINT=https://api.evm.eosnetwork.com
 
 # JSON RPC (optional)
 PORT=50305
@@ -137,13 +140,15 @@ src/eth_gasPrice.spec.ts:
 
 ## Features
 
-- [x] JSON RPC methods
+- [x] JSON RPC methods (Request to EOS RPC)
   - [x] `eth_gasPrice` - get dynamic or static gas price
   - [x] `eth_sendRawTransaction` - send raw transaction to Nodeos RPC
   - [x] `eth_chainId` - get chain ID
   - [x] `eth_blockNumber` - get latest block number
-  - [ ] `eth_getBlockByNumber` - get block by number
   - [x] `eth_getBalance` - get miner balance
+- [x] JSON RPC methods (Proxy to EVM RPC)
+  - [x] `eth_getBlockByNumber` - get block by number
+
 - [x] CLI commands
   - [x] `start` - start miner JSON RPC server
   - [x] `claim` - claim miner rewards

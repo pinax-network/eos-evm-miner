@@ -1,4 +1,5 @@
 import { Name, Session } from "@wharfkit/session";
+import { logger } from "./logger.js";
 
 export interface Config {
     version: number
@@ -63,6 +64,9 @@ export async function account(session: Session, eth_address: string) {
         limit: 1,
         key_type: "sha256",
     });
-    if ( results?.rows?.length === 0 ) throw new Error("eth_address not found");
+    if ( results?.rows?.length === 0 ) {
+        logger.error(`eth_address ${eth_address} not found`);
+        return null;
+    }
     return results.rows[0] as Account;
 }

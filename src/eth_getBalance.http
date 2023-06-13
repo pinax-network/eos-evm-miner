@@ -1,0 +1,5 @@
+POST http://localhost:50305 HTTP/1.1
+# POST https://api.evm.eosnetwork.com HTTP/1.1
+content-type: application/json
+
+{"method":"eth_getBalance","params":["eaf308993fd21ef3ea9f64f8a610bbd55490ce7e", "latest"],"id":1,"jsonrpc":"2.0"}

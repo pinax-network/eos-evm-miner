@@ -1,6 +1,6 @@
-import { JSONRPCServer } from "json-rpc-2.0";
+import { JSONRPCClient, JSONRPCResponse, JSONRPCServer } from "json-rpc-2.0";
 import { Session } from "@wharfkit/session";
-import { DEFAULT_HOSTNAME, DEFAULT_PORT, HOSTNAME, LOCK_GAS_PRICE, PORT,PROMETHEUS_PORT, DEFAULT_PROMETHEUS_PORT, createSession, METRICS_DISABLED, DEFAULT_METRICS_DISABLED, DEFAULT_VERBOSE, VERBOSE, LOCK_CHAIN_ID, LOCK_GENESIS_TIME } from "./src/config.js";
+import { DEFAULT_HOSTNAME, HOSTNAME, LOCK_GAS_PRICE, PORT,PROMETHEUS_PORT, createSession, METRICS_DISABLED, VERBOSE, LOCK_CHAIN_ID, LOCK_GENESIS_TIME, RPC_EVM_ENDPOINT, RPC_ENDPOINT } from "./src/config.js";
 import { logger } from "./src/logger.js";
 import { DefaultOptions } from "./bin/cli.js";
 import { eth_sendRawTransaction } from "./src/eth_sendRawTransaction.js";
@@ -19,21 +19,38 @@ export interface StartOptions extends DefaultOptions {
     lockGasPrice?: string;
     lockChainId?: string;
     lockGenesisTime?: string;
+    rpcEvmEndpoint?: string;
+    rpcEndpoint?: string;
 }
 
 export default function (options: StartOptions) {
-    const port = options.port ?? PORT ?? DEFAULT_PORT;
+    const port = options.port ?? PORT;
     const hostname = options.hostname ?? HOSTNAME;
-    const metricsDisabled = options.metricsDisabled ?? METRICS_DISABLED ?? DEFAULT_METRICS_DISABLED;
-    const metricsListenPort = options.metricsListenPort ?? PROMETHEUS_PORT ?? DEFAULT_PROMETHEUS_PORT;
+    const metricsDisabled = options.metricsDisabled ?? METRICS_DISABLED;
+    const metricsListenPort = options.metricsListenPort ?? PROMETHEUS_PORT;
     const lockGasPrice = options.lockGasPrice ?? LOCK_GAS_PRICE;
     const lockChainId = options.lockChainId ?? LOCK_CHAIN_ID;
     const lockGenesisTime = options.lockGenesisTime ?? LOCK_GENESIS_TIME;
-    const verbose = options.verbose ?? VERBOSE ?? DEFAULT_VERBOSE;
+    const verbose = options.verbose ?? VERBOSE;
+    const rpcEvmEndpoint = options.rpcEvmEndpoint ?? RPC_EVM_ENDPOINT;
+    const rpcEndpoint = options.rpcEndpoint ?? RPC_ENDPOINT;
 
     // create Wharfkit session
     const session = createSession(options);
+
+    // JSON RPC server & client
     const server = new JSONRPCServer();
+    const client: JSONRPCClient<void> = new JSONRPCClient(async jsonRPCRequest => {
+        const response = await fetch(rpcEvmEndpoint, {
+            method: "POST",
+            headers: { "content-type": "application/json"},
+            body: JSON.stringify(jsonRPCRequest),
+        });
+        if ( jsonRPCRequest.id !== undefined ) new Error(response.statusText);
+        if ( response.status !== 200) new Error(response.statusText);
+        const jsonRPCResponse: JSONRPCResponse = await response.json();
+        return client.receive(jsonRPCResponse);
+    });
 
     // enable logging if verbose enabled
     if (verbose) {
@@ -72,6 +89,15 @@ export default function (options: StartOptions) {
         prometheus.blockNumber.requests?.inc();
         const result = await eth_getBalance(session, params)
         prometheus.blockNumber.success?.inc();
+        return result;
+    });
+    // Proxied Requests
+    server.addMethod("eth_getBlockByNumber", async params => {
+        if ( !rpcEvmEndpoint) throw new Error("rpcEvmEndpoint is required");
+        logger.info("eth_getBlockByNumber");
+        prometheus.getBlockByNumber.requests?.inc();
+        const result = await client.request("eth_getBlockByNumber", params);
+        prometheus.getBlockByNumber.success?.inc();
         return result;
     });
 
