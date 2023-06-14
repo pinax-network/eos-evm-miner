@@ -1,0 +1,5 @@
+POST http://localhost:50305 HTTP/1.1
+# POST https://api.evm.eosnetwork.com HTTP/1.1
+content-type: application/json
+
+{"method":"eth_blockNumber","params":["0x2293a13d4d812a845eb115a91f215ec20e1685ec", "0x5d0468"],"id":1,"jsonrpc":"2.0"}
