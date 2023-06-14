@@ -1,9 +1,8 @@
-import pkg from "./package.json" assert { type: "json" };
+
 import { JSONRPCRequest, JSONRPCResponse, JSONRPCServer, JSONRPCServerMiddlewareNext, createJSONRPCErrorResponse } from "json-rpc-2.0";
-import { Session } from "@wharfkit/session";
-import { DEFAULT_HOSTNAME, HOSTNAME, LOCK_GAS_PRICE, PORT,PROMETHEUS_PORT, METRICS_DISABLED, VERBOSE, LOCK_CHAIN_ID, LOCK_GENESIS_TIME, RPC_EVM_ENDPOINT } from "./src/config.js";
+import { HOSTNAME, LOCK_GAS_PRICE, PORT,PROMETHEUS_PORT, METRICS_DISABLED, VERBOSE, LOCK_CHAIN_ID, LOCK_GENESIS_TIME, RPC_EVM_ENDPOINT, SHOW_ENDPOINTS, SHOW_MINER } from "./src/config.js";
 import { logger } from "./src/logger.js";
-import { DefaultOptions } from "./bin/cli.js";
+import { StartOptions } from "./bin/cli.js";
 import * as prometheus from "./src/prometheus.js"
 import { eth_sendRawTransaction } from "./src/eth_sendRawTransaction.js";
 import { eth_gasPrice } from "./src/eth_gasPrice.js";
@@ -14,19 +13,7 @@ import { net_version } from "./src/net_version.js";
 import { eth_getCode } from "./src/eth_getCode.js";
 import { createSession } from "./src/createSession.js";
 import { createClient } from "./src/createClient.js";
-
-export interface StartOptions extends DefaultOptions {
-    port?: number;
-    metricsListenPort?: number;
-    hostname?: string;
-    verbose?: boolean;
-    metricsDisabled?: boolean;
-    lockGasPrice?: string;
-    lockChainId?: string;
-    lockGenesisTime?: string;
-    rpcEvmEndpoint?: string;
-    rpcEndpoint?: string;
-}
+import { banner } from "./src/banner.js";
 
 export default function (options: StartOptions) {
     const port = options.port ?? PORT;
@@ -38,6 +25,8 @@ export default function (options: StartOptions) {
     const lockGenesisTime = options.lockGenesisTime ?? LOCK_GENESIS_TIME;
     const verbose = options.verbose ?? VERBOSE;
     const rpcEvmEndpoint = options.rpcEvmEndpoint ?? RPC_EVM_ENDPOINT;
+    const showEndpoints = options.showEndpoints ?? SHOW_ENDPOINTS;
+    const showMiner = options.showMiner ?? SHOW_MINER;
 
     // create Wharfkit session
     const session = createSession(options);
@@ -47,9 +36,10 @@ export default function (options: StartOptions) {
     const client = createClient(rpcEvmEndpoint);
 
     // enable logging if verbose enabled
+    const banner_text = banner(session, port, {showMiner, showEndpoints, rpcEvmEndpoint, hostname, metricsListenPort, metricsDisabled})
     if (verbose) {
         logger.settings.type = "json";
-        console.log(banner(session, port, rpcEvmEndpoint, hostname, metricsListenPort, metricsDisabled));
+        console.log(banner_text);
     }
 
     server.addMethod("eth_sendRawTransaction", async params => {
@@ -140,7 +130,7 @@ export default function (options: StartOptions) {
         fetch: async (request: Request) => {
             const url = new URL(request.url);
             if ( request.method == "GET" ) {
-                if ( url.pathname == "/" ) return new Response(banner(session, port, rpcEvmEndpoint, hostname, metricsListenPort, metricsDisabled));
+                if ( url.pathname == "/" ) return new Response(banner_text);
                 const info = await session.client.v1.chain.get_info();
                 return toJSON(info.toJSON());
             }
@@ -169,23 +159,4 @@ function toJSON(obj: any, status: number = 200) {
     const headers = { 'Content-Type': 'application/json' };
     const body = JSON.stringify(obj);
     return new Response(body, { status, headers });
-}
-
-function banner( session: Session, port: number, rpcEvmEndpoint?: string, hostname?: string, metricsListenPort?: number, metricsDisabled?: boolean ) {
-    let text = `
-
-        ███████╗ ██████╗ ███████╗    ███████╗██╗   ██╗███╗   ███╗
-        ██╔════╝██╔═══██╗██╔════╝    ██╔════╝██║   ██║████╗ ████║
-        █████╗  ██║   ██║███████╗    █████╗  ██║   ██║██╔████╔██║
-        ██╔══╝  ██║   ██║╚════██║    ██╔══╝  ╚██╗ ██╔╝██║╚██╔╝██║
-        ███████╗╚██████╔╝███████║    ███████╗ ╚████╔╝ ██║ ╚═╝ ██║
-        ╚══════╝ ╚═════╝ ╚══════╝    ╚══════╝  ╚═══╝  ╚═╝     ╚═╝
-`
-    text += `             EOS EVM Miner v${pkg.version} listen @ ${hostname ?? DEFAULT_HOSTNAME}:${port.toString()}\n`
-    if ( !metricsDisabled ) text += `               Prometheus metrics listen @ ${hostname ?? DEFAULT_HOSTNAME}:${metricsListenPort?.toString()}\n`;
-    text += `             RPC Nodeos proxy @ ${session.chain.url.toString()}\n`
-    text += `              RPC EVM proxy @ ${rpcEvmEndpoint}\n`
-    text += `                        EVM miner [${session.actor.toString()}]\n`;
-    text += `        ${session.walletPlugin.metadata.publicKey}\n`
-    return text;
 }

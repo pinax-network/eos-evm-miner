@@ -11,6 +11,8 @@ export const DEFAULT_RPC_ENDPOINT = 'https://eos.api.eosnation.io';
 export const DEFAULT_RPC_EVM_ENDPOINT = 'https://api.evm.eosnetwork.com';
 export const DEFAULT_METRICS_DISABLED = false;
 export const DEFAULT_VERBOSE = false;
+export const DEFAULT_SHOW_MINER = true;
+export const DEFAULT_SHOW_ENDPOINTS = false;
 
 // examples
 export const EXAMPLE_LOCK_CHAIN_ID = "0x4571";
@@ -28,6 +30,8 @@ export const RPC_EVM_ENDPOINT = process.env.RPC_EVM_ENDPOINT ?? DEFAULT_RPC_EVM_
 export const HOSTNAME = process.env.HOSTNAME;
 export const METRICS_DISABLED = JSON.parse(process.env.METRICS_DISABLED ?? String(DEFAULT_METRICS_DISABLED)) as boolean;
 export const VERBOSE = JSON.parse(process.env.VERBOSE ?? String(DEFAULT_VERBOSE)) as boolean;
+export const SHOW_ENDPOINTS = JSON.parse(process.env.SHOW_ENDPOINTS ?? String(DEFAULT_SHOW_ENDPOINTS)) as boolean;
+export const SHOW_MINER = JSON.parse(process.env.SHOW_MINER ?? String(DEFAULT_SHOW_MINER)) as boolean;
 
 // Miner details
 export const MINER_PERMISSION = process.env.MINER_PERMISSION ?? process.env.PERMISSION ?? DEFAULT_MINER_PERMISSION;

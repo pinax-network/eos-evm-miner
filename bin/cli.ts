@@ -13,6 +13,22 @@ program.name(pkg.name)
     .description("EOS EVM Miner JSON RPC Server")
     .version(pkg.version, '-v, --version', `version for ${pkg.name}`)
 
+
+export interface StartOptions extends DefaultOptions {
+    port?: number;
+    metricsListenPort?: number;
+    hostname?: string;
+    verbose?: boolean;
+    metricsDisabled?: boolean;
+    lockGasPrice?: string;
+    lockChainId?: string;
+    lockGenesisTime?: string;
+    rpcEvmEndpoint?: string;
+    rpcEndpoint?: string;
+    showEndpoints?: boolean;
+    showMiner?: boolean;
+}
+
 // Start JSON RPC Server
 defaultOptions(program.command("start"))
     .description("Start JSON RPC Server")
@@ -26,6 +42,8 @@ defaultOptions(program.command("start"))
     .option('--lock-genesis-time', `Lock genesis time (ex: "${EXAMPLE_LOCK_GENESIS_TIME}")`)
     .option('--rpc-endpoint', `EOS RPC endpoint (ex: "${DEFAULT_RPC_ENDPOINT}")`)
     .option('--rpc-evm-endpoint', `EOS RPC endpoint (ex: "${DEFAULT_RPC_EVM_ENDPOINT}")`)
+    .option('--show-endpoints', 'If set, will display all RPC endpoints used by the server')
+    .option('--show-miner', 'If set, will display all miner account details used by the server')
     .action(options => {
         start(options);
     });

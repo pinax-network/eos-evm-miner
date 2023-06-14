@@ -9,7 +9,7 @@
 ## [`Bun` Binary Releases](https://github.com/pinax-network/eos-evm-miner/releases)
 
 ```
-$ wget https://github.com/pinax-network/eos-evm-miner/releases/download/v0.4.2/eos-evm-miner
+$ wget https://github.com/pinax-network/eos-evm-miner/releases/download/v0.5.0/eos-evm-miner
 $ chmod +x ./eos-evm-miner
 ```
 
