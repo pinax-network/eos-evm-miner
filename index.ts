@@ -105,6 +105,7 @@ export default function (options: StartOptions) {
                 prometheus.requests.response?.inc();
                 return response;
             }
+            throw new Error("no response");
         });
     };
 

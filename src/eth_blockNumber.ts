@@ -1,8 +1,9 @@
 import { Session } from "@wharfkit/session";
 import * as tables from "./tables.js";
+import { getGenesisTime } from "./getGenesisTime.js";
 
 export async function eth_blockNumber(session: Session, lockGenesisTime?: string) {
-    let genesis_time = lockGenesisTime;
+    let genesis_time = lockGenesisTime ?? getGenesisTime(session);
     if ( !lockGenesisTime ) {
         const result = await tables.config(session);
         genesis_time = result.genesis_time;
