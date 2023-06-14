@@ -65,35 +65,30 @@ export default function (options: StartOptions) {
         return result;
     });
     server.addMethod("eth_chainId", async () => {
-        logger.info("eth_chainId");
         prometheus.eth_chainId.requests?.inc();
         const result = await eth_chainId(session, lockChainId)
         prometheus.eth_chainId.responses?.inc();
         return result;
     });
     server.addMethod("eth_blockNumber", async () => {
-        logger.info("eth_blockNumber");
         prometheus.eth_blockNumber.requests?.inc();
         const result = await eth_blockNumber(session, lockGenesisTime)
         prometheus.eth_blockNumber.responses?.inc();
         return result;
     });
     server.addMethod("eth_getBalance", async params => {
-        logger.info("eth_getBalance");
         prometheus.eth_getBalance.requests?.inc();
         const result = await eth_getBalance(session, params)
         prometheus.eth_getBalance.responses?.inc();
         return result;
     });
     server.addMethod("net_version", async () => {
-        logger.info("net_version");
         prometheus.net_version.requests?.inc();
         const result = await net_version(session, lockChainId)
         prometheus.net_version.responses?.inc();
         return result;
     });
     server.addMethod("eth_getCode", async params => {
-        logger.info("eth_getCode");
         prometheus.eth_getCode.requests?.inc();
         const result = await eth_getCode(session, params)
         prometheus.eth_getCode.responses?.inc();
@@ -102,12 +97,14 @@ export default function (options: StartOptions) {
 
     // next will call the next middleware
     function logMiddleware<ServerParams=void>(next: JSONRPCServerMiddlewareNext<ServerParams>, request: JSONRPCRequest, serverParams: ServerParams) {
-        console.log(`Received ${JSON.stringify(request)}`, serverParams);
+        logger.info('received', request);
         prometheus.requests.received?.inc();
         return next(request, serverParams).then(response => {
-            console.log(`Response ${JSON.stringify(response)}`);
-            prometheus.requests.response?.inc();
-            return response;
+            if ( response ) {
+                logger.info('response', response);
+                prometheus.requests.response?.inc();
+                return response;
+            }
         });
     };
 

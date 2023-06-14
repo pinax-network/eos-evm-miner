@@ -9,8 +9,7 @@ export async function eth_sendRawTransaction(session: Session, params: any[], br
     if ( broadcast ) {
         const transact = await session.transact({action}, {broadcast});
         if ( transact.response ) {
-            const trx_id = transact.response.transaction_id;
-            logger.info('pushtx', {trx_id});
+            logger.info('pushtx', transact.response);
         } else {
             throw new Error("no response from Nodeos RPC endpoint");
         }

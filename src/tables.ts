@@ -65,7 +65,7 @@ export async function account(session: Session, eth_address: string) {
         key_type: "sha256",
     });
     if ( results?.rows?.length === 0 ) {
-        logger.error(`eth_address ${eth_address} not found`);
+        logger.error("account", `eth_address=${eth_address} not found`);
         return null;
     }
     return results.rows[0] as Account;
@@ -88,7 +88,7 @@ export async function accountcode(session: Session, id: number) {
         limit: 1,
     });
     if ( results?.rows?.length === 0 ) {
-        logger.error(`accountcode.id ${id} not found`);
+        logger.error("accountcode", `id=${id} not found`);
         return null;
     }
     return results.rows[0] as AccountCode;
