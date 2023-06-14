@@ -19,6 +19,11 @@ export async function config(session: Session) {
         table: 'config',
         limit: 1,
     });
+    if ( results?.rows?.length === 0 ) {
+        logger.error("❌ nodeos::config", {error: "does not exists"});
+        return null;
+    }
+    logger.info("🌐 nodeos::config");
     return results.rows[0] as Config;
 }
 
@@ -40,6 +45,11 @@ export async function balances(session: Session, owner?: string) {
         upper_bound: Name.from(owner ?? session.actor),
         limit: 1,
     });
+    if ( results?.rows?.length === 0 ) {
+        logger.warn("⚠️ nodeos::balances", {owner, error: "not found"});
+        return null;
+    }
+    logger.info("🌐 nodeos::balances", {owner});
     return results.rows[0] as Balances;
 }
 
@@ -65,9 +75,10 @@ export async function account(session: Session, eth_address: string) {
         key_type: "sha256",
     });
     if ( results?.rows?.length === 0 ) {
-        logger.error("account", `eth_address=${eth_address} not found`);
+        logger.warn("⚠️ nodeos::account", {eth_address, error: "not found"});
         return null;
     }
+    logger.info("🌐 nodeos::account", {eth_address});
     return results.rows[0] as Account;
 }
 
@@ -88,8 +99,9 @@ export async function accountcode(session: Session, id: number) {
         limit: 1,
     });
     if ( results?.rows?.length === 0 ) {
-        logger.error("accountcode", `id=${id} not found`);
+        logger.warn("⚠️ nodeos::accountcode", {id, error: "not found"});
         return null;
     }
+    logger.info("🌐 nodeos::accountcode", {id});
     return results.rows[0] as AccountCode;
 }

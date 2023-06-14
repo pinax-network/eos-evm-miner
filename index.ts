@@ -95,13 +95,26 @@ export default function (options: StartOptions) {
         return result;
     });
 
+
+    const proxyMethods = new Set([
+        "eth_estimateGas",
+        "eth_getBlockByNumber",
+        "eth_getTransactionCount",
+        "eth_getTransactionReceipt",
+        "eth_getBlockByHash",
+        "eth_call",
+    ]);
+
     // next will call the next middleware
     function logMiddleware<ServerParams=void>(next: JSONRPCServerMiddlewareNext<ServerParams>, request: JSONRPCRequest, serverParams: ServerParams) {
-        logger.info('received', request);
         prometheus.requests.received?.inc();
+        const isProxy = proxyMethods.has(request.method);
+        if ( isProxy ) logger.info('🔀 proxy::received:' + request.method, request);
+        else logger.info('log::received:' + request.method, request);
         return next(request, serverParams).then(response => {
             if ( response ) {
-                logger.info('response', response);
+                if (isProxy ) logger.info('🔀 proxy::response:' + request.method, response);
+                else logger.info('log::response:' + request.method, response);
                 prometheus.requests.response?.inc();
                 return response;
             }
@@ -159,7 +172,7 @@ export default function (options: StartOptions) {
             if (server.hasMethod(jsonRPCRequest.method)) {
                 jsonRPCResponse = await server.receive(jsonRPCRequest)
             } else {
-                logger.error(`❌ missing method ${jsonRPCRequest.method} ${jsonRPCRequest.params}` )
+                logger.error('❌ missing method', jsonRPCRequest)
             }
             if ( jsonRPCResponse ) return new Response(JSON.stringify(jsonRPCResponse), { headers: { 'Content-Type': 'application/json' } });
             // If response is absent, it was a JSON-RPC notification method.
