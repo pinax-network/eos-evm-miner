@@ -31,7 +31,7 @@ export interface StartOptions extends DefaultOptions {
 
 // Start JSON RPC Server
 defaultOptions(program.command("start"))
-    .description("Start JSON RPC Server")
+    .description("Start EOS EVM JSON-RPC API server")
     .option('-p --port <int>', 'JSON RPC listens on port number, listen for incoming Ethereum transactions.', String(DEFAULT_PORT))
     .option('--hostname <string>', `JSON RPC listens on hostname, listen for incoming Ethereum transactions (ex: "${DEFAULT_HOSTNAME})"`)
     .option('--metrics-listen-port <int>', 'The process will listen on this port for Prometheus metrics requests', String(DEFAULT_PROMETHEUS_PORT))
