@@ -95,20 +95,10 @@ export default function (options: StartOptions) {
         return result;
     });
 
-
-    const proxyMethods = new Set([
-        "eth_estimateGas",
-        "eth_getBlockByNumber",
-        "eth_getTransactionCount",
-        "eth_getTransactionReceipt",
-        "eth_getBlockByHash",
-        "eth_call",
-    ]);
-
     // next will call the next middleware
     function logMiddleware<ServerParams=void>(next: JSONRPCServerMiddlewareNext<ServerParams>, request: JSONRPCRequest, serverParams: ServerParams) {
         prometheus.requests.received?.inc();
-        const isProxy = proxyMethods.has(request.method);
+        const isProxy = server.hasMethod(request.method);
         if ( isProxy ) logger.info('🔀 proxy::received:' + request.method, request);
         else logger.info('log::received:' + request.method, request);
         return next(request, serverParams).then(response => {
@@ -128,6 +118,7 @@ export default function (options: StartOptions) {
         } catch (error: any) {
             if (request.id && error.code) {
                 prometheus.requests.errors?.inc();
+                logger.error('❌ log::error:' + request.method, request);
                 return createJSONRPCErrorResponse(request.id, error.code, error.message);
             } else {
                 throw error;
@@ -137,16 +128,6 @@ export default function (options: StartOptions) {
 
     // Middleware will be called in the same order they are applied
     server.applyMiddleware(logMiddleware, exceptionMiddleware);
-
-    // Proxied - Move to internal
-    server.addMethod("eth_estimateGas", params => client.request("eth_estimateGas", params));
-
-    // Proxied Requests
-    server.addMethod("eth_getBlockByNumber", params => client.request("eth_getBlockByNumber", params));
-    server.addMethod("eth_getTransactionCount", params => client.request("eth_getTransactionCount", params));
-    server.addMethod("eth_getTransactionReceipt", params => client.request("eth_getTransactionReceipt", params));
-    server.addMethod("eth_getBlockByHash", params => client.request("eth_getBlockByHash", params));
-    server.addMethod("eth_call", params => client.request("eth_call", params));
 
     if ( !options.metricsDisabled ) {
         prometheus.listen(metricsListenPort, hostname);
@@ -172,11 +153,13 @@ export default function (options: StartOptions) {
             if (server.hasMethod(jsonRPCRequest.method)) {
                 jsonRPCResponse = await server.receive(jsonRPCRequest)
             } else {
-                logger.error('❌ missing method', jsonRPCRequest)
+                // Proxied Requests
+                jsonRPCResponse = await client.requestAdvanced(jsonRPCRequest)
             }
             if ( jsonRPCResponse ) return new Response(JSON.stringify(jsonRPCResponse), { headers: { 'Content-Type': 'application/json' } });
             // If response is absent, it was a JSON-RPC notification method.
             // Respond with no content status (204).
+            logger.error('❌ no content', jsonRPCRequest)
             return new Response("no content", {status: 204})
         }
     })
