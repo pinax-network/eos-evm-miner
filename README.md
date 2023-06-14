@@ -154,6 +154,7 @@ src/eth_gasPrice.spec.ts:
   - [x] `eth_getTransactionReceipt` - Returns the receipt of a transaction by transaction hash.
   - [x] `eth_getBlockByHash` - Returns information of the block matching the given block hash.
   - [x] `eth_getBlockByNumber` - Returns information of the block matching the given block number.
+  - [x] `eth_call` - Executes a new message call immediately without creating a transaction on the block chain.
 
 - [x] CLI commands
   - [x] `start` - start miner JSON RPC server
