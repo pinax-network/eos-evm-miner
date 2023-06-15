@@ -88,12 +88,12 @@ export default function (options: StartOptions) {
     // next will call the next middleware
     function logMiddleware<ServerParams=void>(next: JSONRPCServerMiddlewareNext<ServerParams>, request: JSONRPCRequest, serverParams: ServerParams) {
         prometheus.requests.received?.inc();
-        const isProxy = server.hasMethod(request.method);
+        const isProxy = !server.hasMethod(request.method);
         if ( isProxy ) logger.info('🔀 proxy::received:' + request.method, request);
         else logger.info('log::received:' + request.method, request);
         return next(request, serverParams).then(response => {
             if ( response ) {
-                if (isProxy ) logger.info('🔀 proxy::response:' + request.method, response);
+                if ( isProxy ) logger.info('🔀 proxy::response:' + request.method, response);
                 else logger.info('log::response:' + request.method, response);
                 prometheus.requests.response?.inc();
                 return response;
