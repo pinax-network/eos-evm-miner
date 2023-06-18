@@ -1,5 +1,8 @@
 # EOS EVM Miner
 
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/pinax-network/eos-evm-miner)
+[![Build Status](https://github.com/pinax-network/eos-evm-miner/actions/workflows/ci.yml/badge.svg)](https://github.com/pinax-network/eos-evm-miner/actions/workflows/ci.yml)
+
 > Accepts Ethereum transactions and relays them to EOS EVM network.
 
 ## References
