@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@enf/eos-evm-miner",
-  "version": "0.5.0",
+  "version": "0.5.2",
   "description": "EOS EVM miner",
   "type": "module",
   "exports": "./dist/index.js",
@@ -20,8 +20,8 @@
   "license": "MIT",
   "dependencies": {
     "@ethereumjs/devp2p": "latest",
-    "@wharfkit/session": "^0.5.0",
-    "@wharfkit/wallet-plugin-privatekey": "^0.5.0",
+    "@wharfkit/session": "^1.0.0",
+    "@wharfkit/wallet-plugin-privatekey": "^1.0.0",
     "commander": "latest",
     "dotenv": "latest",
     "json-rpc-2.0": "latest",
